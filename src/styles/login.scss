@@ -1,0 +1,234 @@
+.login_section {
+  display: flex;
+}
+.login_left {
+  width: calc(100% - 480px);
+  height: 100vh;
+  position: relative;
+  background: black;
+  .login_left_wrap {
+    z-index: 2;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 40px;
+    background: linear-gradient(0deg, #6852cd8f 0%, #00000024 100%);
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+
+    .login_left_content {
+      padding: 32px;
+      background: #eeebff80;
+      border-radius: 8px;
+      margin-bottom: 48px;
+
+      p {
+        font-weight: 500;
+        font-size: 42px;
+        line-height: 46px;
+        color: #ffffff;
+        opacity: 0.8;
+        margin: 0;
+
+        span {
+          color: #4327ba;
+        }
+      }
+
+      & > span {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 24px;
+        color: #ffffff;
+        margin-top: 10px;
+        display: block;
+      }
+    }
+  }
+  video {
+    position: absolute;
+    left: 0;
+    top: -64px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transform: scale(0.6);
+    pointer-events: none;
+  }
+}
+.login_right {
+  width: 480px;
+  //   padding: 50px;
+  .login_right_title {
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 46px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.85);
+    margin: 86px 0 100px;
+  }
+  button {
+    float: right;
+  }
+  .login_submit_button {
+    display: block;
+    margin-top: 70px;
+    background: #2f80ed;
+    border-radius: 4px;
+    padding: 8px 24px;
+
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+
+//Animation button
+.login {
+  height: 100vh;
+  overflow: hidden;
+  width: 480px;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    padding: 180px 40px 40px;
+    button {
+      width: 100%;
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+    & > h2 {
+      font-weight: 500;
+      font-size: 38px;
+      line-height: 46px;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    & > p {
+      width: 80%;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, 0.45);
+      text-align: center;
+      margin: 0 auto 0;
+    }
+  }
+
+  &__oneID {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    cursor: pointer;
+    &:hover {
+      .pulse-css {
+        .first-circle {
+          width: 0;
+          height: 0;
+        }
+      }
+    }
+  }
+
+  &__title {
+    background: #4327ba;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* pulse in CSS */
+  .pulse-css {
+    z-index: -1;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.3s ease-in-out;
+
+    .first-circle {
+      background-color: #9d8ee3;
+      transform: scale(0.5);
+      transform-origin: center center;
+      animation: pulse-me 3s linear infinite;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      position: absolute;
+      transition: 0.3s ease-in-out;
+    }
+    .second-circle {
+      @extend .first-circle;
+      animation-delay: 1s;
+    }
+    .third-circle {
+      @extend .first-circle;
+      animation-delay: 2s;
+    }
+  }
+
+  @keyframes pulse-me {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0.95;
+    }
+    50% {
+      opacity: 0.75;
+    }
+    75% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1.7);
+      opacity: 0;
+    }
+  }
+}
+
+// Logo
+.logo {
+  padding: 0px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  img {
+    width: 40px;
+    height: 40px;
+  }
+  span {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: #ffffff;
+  }
+}

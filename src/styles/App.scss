@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+ol,
+ul,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0;
+}
+.ant-pagination-options {
+  display: none;
+}
+.ant-statistic {
+  font-size: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  &-content {
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+  }
+}
+.flex {
+  gap: 4px;
+  display: flex;
+}
+.p8-32 {
+  padding: 8px 32px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #001529;
+
+  ul a {
+    color: white;
+    margin: 0 4px;
+    padding: 8px;
+
+    span {
+      margin-right: 8px;
+    }
+  }
+
+  .active {
+    background: #1890ff;
+  }
+
+  h3 {
+    color: white;
+  }
+}

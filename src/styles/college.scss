@@ -1,0 +1,122 @@
+.college {
+  &__routes {
+    padding: 32px;
+    height: calc(100vh - 132px);
+    background-color: #f0f2f5;
+    & > .flex {
+      gap: 32px;
+      align-items: flex-start;
+    }
+  }
+  &__info {
+    background: white;
+    padding: 16px 24px;
+    border-radius: 4px;
+    width: 300px;
+    ul {
+      border-bottom: 1px solid #bfbfbf;
+    }
+    .flex,
+    li {
+      gap: 12px;
+      display: flex;
+      padding: 8px 0;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    h4 {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    span {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      color: #595959;
+    }
+  }
+  &__directions {
+    flex-grow: 1;
+    padding: 24px;
+    border-radius: 4px;
+    background-color: white;
+  }
+  & > h1 {
+    padding: 24px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .sozlama {
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 24px;
+      color: rgba(0, 0, 0, 0.85);
+
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+    h2 {
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 32px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    li {
+      padding: 10px;
+      justify-content: space-between;
+      span {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 22px;
+        color: #595959;
+      }
+      h4 {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+      }
+      &:nth-child(even) {
+        background-color: #f3f3f6;
+      }
+    }
+    & > div {
+      width: 50%;
+      padding: 24px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background-color: white;
+    }
+    &__withImage {
+      .ant-image {
+        width: 240px;
+        height: 300px;
+        img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      & > .flex {
+        gap: 16px;
+        div {
+          &:nth-child(2) {
+            flex-grow: 1;
+          }
+        }
+      }
+    }
+    &__noImage {
+      h1 {
+        flex-grow: 1;
+      }
+    }
+  }
+}
