@@ -9,7 +9,7 @@ import {
   GaugeConfig,
 } from "@ant-design/plots";
 
-const Statistcs: React.FC = () => {
+const Charts: React.FC = () => {
   const [dataArea, setDataArea] = useState([]);
 
   const dataPie = [
@@ -253,22 +253,21 @@ const Statistcs: React.FC = () => {
 
   return (
     <div>
-      <h1>Statistcs</h1>
+      <h1>Charts</h1>
 
-      <div className="flex" style={{ justifyContent: "center" }}>
-        <Pie data={dataPie} {...configPie} />
-        <Gauge {...configGuage} />
-      </div>
-
-      <TinyArea data={data} {...config} />
+      <Pie data={dataPie} {...configPie} />
 
       <Column data={dataPlot} {...configPlot} />
 
       <Line data={dataLine} {...configLine} />
 
       <Area data={dataArea} {...configArea} />
+
+      <TinyArea data={data} {...config} />
+
+      <Gauge {...configGuage} />
     </div>
   );
 };
 
-export default Statistcs;
+export default Charts;
