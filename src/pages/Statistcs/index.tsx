@@ -1,60 +1,53 @@
 import React, { useEffect, useState } from "react";
 import {
   Pie,
-  Column,
-  Line,
   Area,
-  TinyArea,
   Gauge,
+  Column,
+  TinyArea,
+  PieConfig,
   GaugeConfig,
 } from "@ant-design/plots";
+import "src/styles/statistcs.scss";
 
 const Statistcs: React.FC = () => {
   const [dataArea, setDataArea] = useState([]);
 
   const dataPie = [
     {
-      type: "分类一",
+      type: "salom1",
       value: 27,
     },
     {
-      type: "分类二",
+      type: "salom2",
       value: 25,
     },
     {
-      type: "分类三",
+      type: "salom3",
       value: 18,
     },
     {
-      type: "分类四",
+      type: "salom4",
       value: 15,
     },
     {
-      type: "分类五",
+      type: "salom5",
       value: 10,
     },
     {
-      type: "其他",
+      type: "salom6",
       value: 5,
     },
   ];
-  const configPie = {
-    appendPadding: 10,
+  const configPie: PieConfig = {
     angleField: "value",
     colorField: "type",
     radius: 0.8,
-    label: {
-      type: "outer",
-      content: "{name} {percentage}",
+    legend: {
+      layout: "horizontal",
+      position: "bottom",
     },
-    interactions: [
-      {
-        type: "pie-legend-active",
-      },
-      {
-        type: "element-active",
-      },
-    ],
+    data: dataPie,
   };
 
   const dataPlot = [
@@ -100,76 +93,6 @@ const Statistcs: React.FC = () => {
         autoRotate: false,
       },
     },
-  };
-
-  const dataLine = [
-    {
-      year: "1991",
-      value: 3,
-    },
-    {
-      year: "1992",
-      value: 4,
-    },
-    {
-      year: "1993",
-      value: 3.5,
-    },
-    {
-      year: "1994",
-      value: 5,
-    },
-    {
-      year: "1995",
-      value: 4.9,
-    },
-    {
-      year: "1996",
-      value: 6,
-    },
-    {
-      year: "1997",
-      value: 7,
-    },
-    {
-      year: "1998",
-      value: 9,
-    },
-    {
-      year: "1999",
-      value: 13,
-    },
-  ];
-  const configLine = {
-    xField: "year",
-    yField: "value",
-    label: {},
-    point: {
-      size: 5,
-      shape: "diamond",
-      style: {
-        fill: "white",
-        stroke: "#5B8FF9",
-        lineWidth: 2,
-      },
-    },
-    tooltip: {
-      showMarkers: false,
-    },
-    state: {
-      active: {
-        style: {
-          shadowBlur: 4,
-          stroke: "#000",
-          fill: "red",
-        },
-      },
-    },
-    interactions: [
-      {
-        type: "marker-active",
-      },
-    ],
   };
 
   const configArea = {
@@ -236,15 +159,6 @@ const Statistcs: React.FC = () => {
         count: 3,
       },
     },
-    statistic: {
-      content: {
-        formatter: ({ percent }: any) => `Rate: ${(percent * 100).toFixed(0)}%`,
-        style: {
-          color: "rgba(0,0,0,0.65)",
-          fontSize: "48",
-        },
-      },
-    },
   };
 
   useEffect(() => {
@@ -252,21 +166,42 @@ const Statistcs: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Statistcs</h1>
+    <div className="statistcs">
+      <div className=" statistcs__top">
+        <div>
+          <div className="flex">
+            <span>Resurs yuklagan ta’lim muassasalari soni: </span>
+            <h4>8,846 ta</h4>
+          </div>
+          <TinyArea data={data} {...config} className="chart" />
+        </div>
+        <div>
+          <div className="flex">
+            <span>Jami yuklangan resurslar soni:</span>
+            <h4>6560 ta</h4>
+          </div>
+          <Column data={dataPlot} {...configPlot} className="chart" />
+        </div>
+        <div>
+          <div className="flex">
+            <span>Jami yuklab olingan resurslar</span>
+            <h4>78%</h4>
+          </div>
 
-      <div className="flex" style={{ justifyContent: "center" }}>
-        <Pie data={dataPie} {...configPie} />
-        <Gauge {...configGuage} />
+          <Gauge {...configGuage} className="chart" />
+        </div>
       </div>
 
-      <TinyArea data={data} {...config} />
-
-      <Column data={dataPlot} {...configPlot} />
-
-      <Line data={dataLine} {...configLine} />
-
-      <Area data={dataArea} {...configArea} />
+      <div className="statistcs__bottom">
+        <div>
+          <h3>Yuklab olishlarni vaqt bo‘yicha statistikasi</h3>
+          <Area data={dataArea} {...configArea} className="chart" />
+        </div>
+        <div>
+          <h3>Resurs turlari bo‘yicha statistika</h3>
+          <Pie {...configPie} className="chart" />
+        </div>
+      </div>
     </div>
   );
 };
