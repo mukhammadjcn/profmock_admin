@@ -17,7 +17,9 @@ const Direaction: React.FC = () => {
       dataIndex: "mutaxasis",
       key: "mutaxasis",
       render: (_, item) => (
-        <Link to={`#item${item.key}`}>{item.mutaxasis}</Link>
+        <Link to={`/college/direction/subject?subjectID=${item.key}`}>
+          {item.mutaxasis}
+        </Link>
       ),
     },
     {

@@ -1,8 +1,8 @@
 .college {
   &__routes {
     padding: 32px;
-    height: calc(100vh - 132px);
     background-color: #f0f2f5;
+    min-height: calc(100vh - 132px);
     & > .flex {
       gap: 32px;
       align-items: flex-start;
@@ -116,6 +116,78 @@
     &__noImage {
       h1 {
         flex-grow: 1;
+      }
+    }
+  }
+
+  .subject {
+    &__tab {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      .ant-tabs-nav {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .theme {
+    &__body {
+      gap: 16px;
+      display: flex;
+      margin-top: 16px;
+      flex-direction: column;
+
+      .ant-collapse {
+        font-size: 16px;
+        background-color: #ffffff;
+      }
+    }
+    &__items {
+      .single {
+        gap: 24px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        align-items: center;
+        & > div {
+          flex-grow: 1;
+
+          h3 {
+            font-size: 18px;
+            line-height: 120%;
+            font-weight: 500;
+          }
+        }
+
+        &:not(:first-child) {
+          margin-top: 16px;
+        }
+
+        & > .flex {
+          gap: 12px;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+
+      .ppt {
+        border: 1px solid #d35230;
+      }
+      .pdf {
+        border: 1px solid #c80a0a;
+      }
+      .doc {
+        border: 1px solid #185abd;
+      }
+      .mp4 {
+        border: 1px solid #14c130;
+      }
+      .link {
+        border: 1px solid #454db9;
       }
     }
   }

@@ -1,9 +1,12 @@
 import React from "react";
-import Header from "src/components/Header";
-import { Outlet, useLocation } from "react-router-dom";
 import "src/styles/college.scss";
+import Button from "antd/es/button";
+import Header from "src/components/Header";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Muassasa: React.FC = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const GiveTitle = () => {
@@ -13,6 +16,10 @@ const Muassasa: React.FC = () => {
       ? "Statistika"
       : keyword?.includes("sozlama")
       ? "Sozlamalar"
+      : keyword?.includes("direction/subject/theme")
+      ? "Mavzular"
+      : keyword?.includes("direction/subject")
+      ? "Fanlar"
       : "O‘zbekiston davlat jahon tillari universiteti";
   };
 
@@ -20,7 +27,18 @@ const Muassasa: React.FC = () => {
     <div className="college">
       <Header />
 
-      <h1>{GiveTitle()}</h1>
+      <h1>
+        {(GiveTitle() == "Fanlar" || GiveTitle() == "Mavzular") && (
+          <Button
+            style={{ marginRight: 16 }}
+            onClick={() => navigate(-1)}
+            icon={<ArrowLeftOutlined />}
+          >
+            Orqaga qaytish
+          </Button>
+        )}
+        {GiveTitle()}
+      </h1>
 
       {/* Routes gores here */}
       <div className="college__routes">
