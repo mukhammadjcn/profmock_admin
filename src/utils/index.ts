@@ -1,16 +1,13 @@
 import { message } from "antd";
-import { regions } from "src/config/data";
-import { IRegion } from "src/types/index";
-import { deleteCookie } from "../server/Cookies";
 import { ACCESS, REFRESH, role, ROLE } from "../server/Host";
 
 export const CatchError = async (error: any) => {
   if (error.response) {
     let obj = error.response.data;
     if (error.response.status === 401) {
-      deleteCookie(ACCESS);
-      deleteCookie(REFRESH);
-      deleteCookie(ROLE);
+      localStorage.removeItem(ACCESS);
+      localStorage.removeItem(REFRESH);
+      localStorage.removeItem(ROLE);
       window.location.href = "/";
       // Displaying error messages
       for (let key in obj) {
@@ -36,9 +33,9 @@ export const CatchError = async (error: any) => {
       }
     } else {
       if (obj?.code == "token_not_valid") {
-        deleteCookie(ROLE);
-        deleteCookie(ACCESS);
-        deleteCookie(REFRESH);
+        localStorage.removeItem(ROLE);
+        localStorage.removeItem(ACCESS);
+        localStorage.removeItem(REFRESH);
         message.info("Kirish vaqti tugadi, qaytadan kiring !");
         await new Promise((r: any) => setTimeout(r, 2000));
         window.location.href = "/";
@@ -58,9 +55,9 @@ export const CatchError = async (error: any) => {
                   if (obj[key] === "Siz universitet admini emassiz") {
                     message.info('"Siz universitet admini emassiz"');
                     await new Promise((r) => setTimeout(r, 3000));
-                    deleteCookie(ACCESS);
-                    deleteCookie(REFRESH);
-                    deleteCookie(ROLE);
+                    localStorage.removeItem(ACCESS);
+                    localStorage.removeItem(REFRESH);
+                    localStorage.removeItem(ROLE);
                     window.location.href = "/";
                   } else {
                     message.error(obj[key]);
@@ -94,8 +91,4 @@ export const GiveType = (key: number) => {
     : key == 3
     ? `Sirtqi`
     : "Kechki";
-};
-
-export const GetDistrict = (regionID: number) => {
-  return regions.find((region: IRegion) => region.id == regionID)?.districts;
 };

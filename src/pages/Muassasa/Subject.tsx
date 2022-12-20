@@ -52,7 +52,7 @@ const Subject: React.FC = () => {
     },
     {
       title: "Amallar",
-      key: "resurs_number",
+      key: "actions",
       align: "center",
       width: 180,
       render: (_, item) => (
@@ -140,7 +140,7 @@ const Subject: React.FC = () => {
         <Table
           columns={columns}
           dataSource={data}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 12 }}
         />
       </div>
     </div>

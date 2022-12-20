@@ -1,8 +1,7 @@
 import axios from "axios";
-import { getCookie } from "./Cookies";
 
 // Host URL
-export let host = "https://backoffice.Profmooc.edu.uz/api";
+export let host = "https://prof-dist.edu.uz/api";
 
 // Names for local usage
 export const ROLE = "role";
@@ -10,9 +9,9 @@ export const ACCESS = "access";
 export const REFRESH = "refresh";
 
 // Get cookies
-export const role = getCookie(ROLE);
-export const token = getCookie(ACCESS);
-export const refresh = getCookie(REFRESH);
+export const role = localStorage.getItem(ROLE);
+export const token = localStorage.getItem(ACCESS);
+export const refresh = localStorage.getItem(REFRESH);
 
 // Requests header
 export let headers = {

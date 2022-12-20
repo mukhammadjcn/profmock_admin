@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           <DashboardOutlined />
-          Dashboard
+          Statistika
         </NavLink>
         <NavLink
           to={"/college/direction"}

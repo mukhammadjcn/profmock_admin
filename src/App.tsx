@@ -7,13 +7,13 @@ import {
 import {
   Login,
   Status,
+  Sozlama,
   NotFound,
   Muassasa,
   Statistcs,
-  MuassasaDirection,
-  MuassasaSubject,
   MuassasaTheme,
-  Sozlama,
+  MuassasaSubject,
+  MuassasaDirection,
 } from "./pages";
 import "src/styles/App.scss";
 import { role, token } from "./server/Host";
@@ -28,12 +28,25 @@ const App: React.FC = () => {
         <Route
           index
           element={
-            token && role == "admin" ? <Navigate to="/status" /> : <Login />
+            token && role == "ROLE_EDUADMIN" ? (
+              <Navigate to="/college/statistcs" />
+            ) : (
+              <Login />
+            )
           }
         />
 
         {/* Musassasa pages */}
-        <Route path="college" element={<Muassasa />}>
+        <Route
+          path="college"
+          element={
+            token && role == "ROLE_EDUADMIN" ? (
+              <Muassasa />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        >
           <Route index element={<Navigate to="statistcs" />} />
           <Route path="sozlama" element={<Sozlama />} />
           <Route path="statistcs" element={<Statistcs />} />
@@ -49,7 +62,7 @@ const App: React.FC = () => {
         </Route>
 
         {/* Status page */}
-        <Route path="/status" element={<Status />} />
+        <Route path="/qabul.jsp" element={<Status />} />
 
         {/* Not found page */}
         <Route path="/*" element={<NotFound />} />
