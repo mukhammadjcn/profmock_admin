@@ -23,6 +23,17 @@ const Muassasa: React.FC = () => {
       : "O‘zbekiston davlat jahon tillari universiteti";
   };
 
+  const goLast = () => {
+    const last = localStorage.getItem("lastpage");
+    const current = window.location.pathname + window.location.search;
+
+    if (last == current) {
+      navigate("/college/direction");
+    } else {
+      navigate(`${last}`);
+    }
+  };
+
   return (
     <div className="college">
       <Header />
@@ -31,7 +42,7 @@ const Muassasa: React.FC = () => {
         {(GiveTitle() == "Fanlar" || GiveTitle() == "Mavzular") && (
           <Button
             style={{ marginRight: 16 }}
-            onClick={() => navigate(-1)}
+            onClick={goLast}
             icon={<ArrowLeftOutlined />}
           >
             Orqaga qaytish

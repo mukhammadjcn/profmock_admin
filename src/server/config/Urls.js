@@ -18,3 +18,19 @@ export const PostDirectionConfig = (data) => {
 export const DelDirectionConfig = (id) => {
   return DeleteFunc(`/eduadmin/join/deleteJoinDirectionEdu/${id}`);
 };
+
+// Get subjects
+export const GetSubjectsConfig = () => {
+  return GetFunc(`/eduadmin/join/subjects`);
+};
+export const GetMySubjectsConfig = (params) => {
+  return GetFunc(
+    `/eduadmin/join/getAllSubjectDirection?size=10${params ?? ""}`
+  );
+};
+export const PostSubjectConfig = (data) => {
+  return CreateFunc(`/eduadmin/join/joinSubjectAndDirection`, data);
+};
+export const DelSubjectConfig = (id) => {
+  return DeleteFunc(`/eduadmin/join/deleteJoinDirectionSubject/${id}`);
+};

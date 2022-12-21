@@ -4,7 +4,15 @@ export interface IDirections {
   subject_number: number;
 }
 
-export interface IDirectionList {
+export interface IList {
   label: string;
   value: string;
+}
+
+export interface ISubject {
+  key: string;
+  name: string;
+  status: boolean;
+  theme_number: number;
+  resurs_number: number;
 }

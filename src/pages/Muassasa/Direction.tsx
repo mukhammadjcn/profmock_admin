@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
-import { CatchError } from "src/utils/index";
-import { IDirectionList, IDirections } from "src/types/index";
+import { CatchError, LastPage } from "src/utils/index";
+import { IList, IDirections } from "src/types/index";
 import {
   PostDirectionConfig,
   GetDirectionsConfig,
@@ -18,7 +18,7 @@ const Direaction: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [directions, setDirections] = useState<IDirections[]>([]);
-  const [directionsList, setDirectionsList] = useState<IDirectionList[]>([]);
+  const [directionsList, setDirectionsList] = useState<IList[]>([]);
 
   // For pagination
   const [total, setTotal] = useState(0);
@@ -31,7 +31,10 @@ const Direaction: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (_, item) => (
-        <Link to={`/college/direction/subject?subjectID=${item.key}`}>
+        <Link
+          to={`/college/direction/subject?directionEduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
           {item.name}
         </Link>
       ),
@@ -59,7 +62,6 @@ const Direaction: React.FC = () => {
       ),
     },
   ];
-
   const selectProps: SelectProps = {
     mode: "multiple",
     showSearch: true,
@@ -82,14 +84,12 @@ const Direaction: React.FC = () => {
     } else searchParams.delete(key);
     setSearchParams(searchParams);
   };
-
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
     GetMyDirections();
     window.scrollTo(0, 0);
   };
-
   const urlMaker = () => {
     let url = "&";
     for (let key of searchParams.keys()) {

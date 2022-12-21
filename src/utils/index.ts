@@ -92,3 +92,10 @@ export const GiveType = (key: number) => {
     ? `Sirtqi`
     : "Kechki";
 };
+
+export const LastPage = () => {
+  localStorage.setItem(
+    "lastpage",
+    window.location.pathname + window.location.search
+  );
+};
