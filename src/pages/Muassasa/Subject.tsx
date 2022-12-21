@@ -39,7 +39,7 @@ const Subject: React.FC = () => {
   // For pagination
   const [total, setTotal] = useState(0);
   const currentPage = searchParams.get("page");
-  const currentSemester = searchParams.get("semester");
+  const currentSemester = searchParams.get("semesterId");
   const [current, setCurrent] = useState(currentPage ? currentPage : 1);
   const [currentSem, setCurrentSem] = useState(
     currentSemester ? currentSemester : 1
@@ -138,7 +138,7 @@ const Subject: React.FC = () => {
   };
   const setSemester = (val: any) => {
     setCurrentSem(val);
-    handleMakeParams("semester", val);
+    handleMakeParams("semesterId", val);
     GetMyDirections();
     window.scrollTo(0, 0);
   };
@@ -174,7 +174,7 @@ const Subject: React.FC = () => {
     try {
       await PostSubjectConfig({
         subjectId,
-        semesterId: searchParams.get("semester") || 1,
+        semesterId: searchParams.get("semesterId") || 1,
         directionId: searchParams.get("directionEduId"),
       });
       await GetMyDirections();

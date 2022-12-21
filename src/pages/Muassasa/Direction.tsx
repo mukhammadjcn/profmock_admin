@@ -32,7 +32,7 @@ const Direaction: React.FC = () => {
       key: "name",
       render: (_, item) => (
         <Link
-          to={`/college/direction/subject?directionEduId=${item.key}`}
+          to={`/college/direction/subject?semesterId=1&directionEduId=${item.key}`}
           onClick={() => LastPage()}
         >
           {item.name}
