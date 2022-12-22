@@ -52,7 +52,7 @@ const Subject: React.FC = () => {
       key: "name",
       render: (_, item) => (
         <Link
-          to={`/college/direction/subject/theme?themeID=${item.key}`}
+          to={`/college/direction/subject/theme?directionSubjectEduId=${item.key}`}
           onClick={() => LastPage()}
         >
           {item.name}
@@ -199,10 +199,10 @@ const Subject: React.FC = () => {
           (prev: any, next: any) => [
             ...prev,
             {
-              key: next?.subjectDirectionEduId,
               name: next?.name,
-              theme_number: next?.subjectCount ?? 0,
-              resurs_number: next?.subjectCount ?? 0,
+              key: next?.subjectDirectionEduId,
+              theme_number: next?.countTheme ?? 0,
+              resurs_number: next?.countResource ?? 0,
             },
           ],
           []

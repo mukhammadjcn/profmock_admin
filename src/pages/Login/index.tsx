@@ -35,7 +35,7 @@ const Login: React.FC = () => {
         <div className="login__form">
           <h2>Tizimga kirish</h2>
           <div className="login__oneID">
-            <a href="https://backoffice.Profmooc.edu.uz/api/auth/one-id/">
+            <a href="https://prof-dist.edu.uz/api/auth/oneId">
               <div className="login__title">ONE ID orqali kirish</div>
             </a>
             <div className="pulse-css">

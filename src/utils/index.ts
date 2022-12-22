@@ -99,3 +99,32 @@ export const LastPage = () => {
     window.location.pathname + window.location.search
   );
 };
+
+// const props: UploadProps = {
+//   name: "file",
+//   multiple: true,
+//   fileList: fileList,
+//   beforeUpload() {
+//     return false;
+//   },
+//   async onChange(val) {
+//     console.log(val);
+//     setFileList([...val?.fileList]);
+
+//     await new Promise(() => {
+//       setTimeout(() => {
+//         setFileList([]);
+//         message.success("Muvofaqqiyatli yuborildi !");
+//       }, 5000);
+//     });
+//   },
+// };
+
+// <Upload.Dragger {...props} style={{ marginTop: 24 }}>
+//                   <p className="ant-upload-drag-icon">
+//                     <DownloadOutlined />
+//                   </p>
+//                   <p className="ant-upload-text">
+//                     Bu yerni bosing yoki kerakli fayllarni shu yerga tashlang :)
+//                   </p>
+//                 </Upload.Dragger>

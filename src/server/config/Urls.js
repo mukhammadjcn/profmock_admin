@@ -34,3 +34,23 @@ export const PostSubjectConfig = (data) => {
 export const DelSubjectConfig = (id) => {
   return DeleteFunc(`/eduadmin/join/deleteJoinDirectionSubject/${id}`);
 };
+
+// Get theme
+export const GetMyThemesConfig = (params) => {
+  return GetFunc(`/eduadmin/allTheme?size=10${params ?? ""}`);
+};
+export const GetAllResourceConfig = (id) => {
+  return GetFunc(`/eduadmin/getAllResource?themeId=${id}`);
+};
+export const PostThemeConfig = (data) => {
+  return CreateFunc(`/eduadmin/createTheme`, data);
+};
+export const PostFileConfig = (data) => {
+  return CreateFunc(`/eduadmin/uploadfile`, data);
+};
+export const PostResourceConfig = (data) => {
+  return CreateFunc(`/eduadmin/createResource`, data);
+};
+export const DelResourceConfig = (id) => {
+  return DeleteFunc(`/eduadmin/deleteResource/${id}`);
+};

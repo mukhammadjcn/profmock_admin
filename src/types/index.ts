@@ -16,3 +16,8 @@ export interface ISubject {
   theme_number: number;
   resurs_number: number;
 }
+
+export interface ITheme {
+  themeId: number;
+  themeName: string;
+}
