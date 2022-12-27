@@ -14,6 +14,8 @@ import {
   MuassasaTheme,
   MuassasaSubject,
   MuassasaDirection,
+  Boshqarma,
+  BoshqarmaUniversities,
 } from "./pages";
 import "src/styles/App.scss";
 import { role, token } from "./server/Host";
@@ -56,6 +58,34 @@ const App: React.FC = () => {
               <Route index element={<MuassasaSubject />} />
               <Route path=":theme">
                 <Route index element={<MuassasaTheme />} />
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+
+        {/* Musassasa pages */}
+        <Route
+          path="administration"
+          element={
+            token && role == "ROLE_MANAGMENT" ? (
+              <Boshqarma />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        >
+          <Route index element={<Navigate to="statistcs" />} />
+          <Route path="sozlama" element={<Sozlama />} />
+          <Route path="statistcs" element={<Statistcs />} />
+          <Route path="universities">
+            <Route index element={<BoshqarmaUniversities />} />
+            <Route path=":direction">
+              <Route index element={<MuassasaDirection />} />
+              <Route path=":subject">
+                <Route index element={<MuassasaSubject />} />
+                <Route path=":theme">
+                  <Route index element={<MuassasaTheme />} />
+                </Route>
               </Route>
             </Route>
           </Route>

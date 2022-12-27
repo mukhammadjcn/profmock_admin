@@ -54,3 +54,6 @@ export const PostResourceConfig = (data) => {
 export const DelResourceConfig = (id) => {
   return DeleteFunc(`/eduadmin/deleteResource/${id}`);
 };
+export const DelThemeConfig = (id) => {
+  return DeleteFunc(`/eduadmin/deleteTheme?themeId=${id}`);
+};

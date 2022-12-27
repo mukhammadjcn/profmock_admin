@@ -18,13 +18,21 @@ import {
   GetMyThemesConfig,
   PostResourceConfig,
   GetAllResourceConfig,
+  DelSubjectConfig,
+  DelResourceConfig,
+  DelThemeConfig,
 } from "src/server/config/Urls";
 import { ITheme } from "types/index";
 import { RcFile } from "antd/es/upload";
 import { CatchError } from "src/utils/index";
 import { useSearchParams } from "react-router-dom";
 import NoData from "src/components/animation/NoData";
-import { PlusOutlined, DeleteOutlined, InboxOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  InboxOutlined,
+  DeleteOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 
 const Theme: React.FC = () => {
   const [form] = Form.useForm();
@@ -104,6 +112,16 @@ const Theme: React.FC = () => {
     }
     return e?.fileList[0];
   };
+  const delTheme = (id: number) => (
+    <DeleteOutlined
+      onClick={(event) => {
+        // If you don't want click extra trigger collapse, you can prevent this:
+        event.stopPropagation();
+
+        DeleteTheme(id);
+      }}
+    />
+  );
 
   const CreateTheme = async ({ name }: { name: string }) => {
     try {
@@ -136,6 +154,7 @@ const Theme: React.FC = () => {
   };
   const GetResources = async (id: string | string[]) => {
     if (id) {
+      setThemeId(+id);
       setLoadingIn(true);
       try {
         const { data } = await GetAllResourceConfig(id);
@@ -166,9 +185,15 @@ const Theme: React.FC = () => {
       }
     } else {
       try {
-        const formData = new FormData();
-        formData.append("file", file as RcFile);
-        await PostFileConfig(formData);
+        let formData = new FormData();
+        formData.append("file", file?.originFileObj);
+
+        const { data } = await PostFileConfig(formData);
+        await PostResourceConfig({
+          url: data?.object,
+          type,
+          themeId,
+        });
 
         message.success("Muvofaqqiyatli qo'shildi");
         setIsModalFile(false);
@@ -178,6 +203,38 @@ const Theme: React.FC = () => {
         CatchError(error);
       }
     }
+  };
+  const DeleteResource = async (id: number) => {
+    Modal.confirm({
+      title: "Haqiqatdan ham bu resursni o'chirasizmi ?",
+      icon: <ExclamationCircleFilled />,
+      content: "Keyinchalik bu yo'nalishni qayta qo'shib olishingiz mumkin ",
+      async onOk() {
+        try {
+          await DelResourceConfig(id);
+          message.success("Muvofaqqiyatli o'chirildi )");
+          GetResources(themeId.toString());
+        } catch (error) {
+          CatchError(error);
+        }
+      },
+    });
+  };
+  const DeleteTheme = async (id: number) => {
+    Modal.confirm({
+      title: "Haqiqatdan ham bu mavzuni o'chirasizmi ?",
+      icon: <ExclamationCircleFilled />,
+      content: "Keyinchalik bu yo'mavzuni qayta qo'shib olishingiz mumkin ",
+      async onOk() {
+        try {
+          await DelThemeConfig(id);
+          message.success("Muvofaqqiyatli o'chirildi )");
+          GetMyThemes();
+        } catch (error) {
+          CatchError(error);
+        }
+      },
+    });
   };
 
   useEffect(() => {
@@ -206,7 +263,11 @@ const Theme: React.FC = () => {
             <Spin spinning={loading}>
               <Collapse accordion onChange={(id) => GetResources(id)}>
                 {themes.map((theme: ITheme) => (
-                  <Collapse.Panel key={theme.themeId} header={theme.themeName}>
+                  <Collapse.Panel
+                    key={theme.themeId}
+                    header={theme.themeName}
+                    extra={delTheme(theme.themeId)}
+                  >
                     <Spin spinning={loadingIn}>
                       <div className="theme__items">
                         {resources.map((i: any) => (
@@ -260,7 +321,7 @@ const Theme: React.FC = () => {
                                 danger
                                 type="primary"
                                 icon={<DeleteOutlined />}
-                                onClick={() => alert(i)}
+                                onClick={() => DeleteResource(i?.id)}
                               />
                             </div>
                           </div>
