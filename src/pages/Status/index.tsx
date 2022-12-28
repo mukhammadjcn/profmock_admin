@@ -28,7 +28,11 @@ const Status: React.FC = () => {
         // SET TOKEN
         localStorage.setItem(ACCESS, data?.object?.jwtToken);
 
-        window.location.href = "/college/statistcs";
+        if (data?.object?.roles[0] == "ROLE_EDUADMIN") {
+          window.location.href = "/college/statistcs";
+        } else {
+          window.location.href = "administration/statistcs";
+        }
       } catch (error) {
         navigate("/");
         CatchError(error);

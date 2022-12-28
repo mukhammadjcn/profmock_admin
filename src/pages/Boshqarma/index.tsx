@@ -4,38 +4,23 @@ import Button from "antd/es/button";
 import Header from "src/components/Header";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { role } from "src/server/Host";
 
 const Muassasa: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const GiveTitle = () => {
-    if (role == "ROLE_MANAGMENT") {
-      let keyword = pathname.split("/administration/")[1];
+    let keyword = pathname.split("/administration/")[1];
 
-      return keyword?.includes("statistcs")
-        ? "Statistika"
-        : keyword?.includes("sozlama")
-        ? "Sozlamalar"
-        : keyword?.includes("direction/subject/theme")
-        ? "Mavzular"
-        : keyword?.includes("direction/subject")
-        ? "Fanlar"
-        : "Hududdagi universitetlar ro'yhati";
-    } else {
-      let keyword = pathname.split("/college/")[1];
-
-      return keyword?.includes("statistcs")
-        ? "Statistika"
-        : keyword?.includes("sozlama")
-        ? "Sozlamalar"
-        : keyword?.includes("direction/subject/theme")
-        ? "Mavzular"
-        : keyword?.includes("direction/subject")
-        ? "Fanlar"
-        : "O‘zbekiston davlat jahon tillari universiteti";
-    }
+    return keyword?.includes("statistcs")
+      ? "Statistika"
+      : keyword?.includes("sozlama")
+      ? "Sozlamalar"
+      : keyword?.includes("direction/subject/theme")
+      ? "Mavzular"
+      : keyword?.includes("direction/subject")
+      ? "Fanlar"
+      : "Hududdagi universitetlar ro'yhati";
   };
 
   const goLast = () => {
@@ -54,7 +39,9 @@ const Muassasa: React.FC = () => {
       <Header />
 
       <h1>
-        {(GiveTitle() == "Fanlar" || GiveTitle() == "Mavzular") && (
+        {(GiveTitle() !== "Hududdagi universitetlar ro'yhati" ||
+          GiveTitle() !== "Statistika" ||
+          GiveTitle() !== "Sozlamalar") && (
           <Button
             style={{ marginRight: 16 }}
             onClick={goLast}

@@ -4,16 +4,18 @@ import { ColumnsType } from "antd/es/table";
 import { CatchError, LastPage } from "src/utils/index";
 import { IList, IDirections } from "src/types/index";
 import {
+  DelDirectionConfig,
   PostDirectionConfig,
+  GetUniverStatConfig,
   GetDirectionsConfig,
   GetMyDirectionsConfig,
-  DelDirectionConfig,
 } from "src/server/config/Urls";
 import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, Table, Form, Select, SelectProps, message } from "antd";
 
 const Direaction: React.FC = () => {
   const [form] = Form.useForm();
+  const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,7 +58,7 @@ const Direaction: React.FC = () => {
           danger
           type="primary"
           icon={<DeleteOutlined />}
-          disabled={item.subject_number > 0}
+          // disabled={item.subject_number > 0}
           onClick={() => DeleteDirection(+item.key)}
         />
       ),
@@ -179,8 +181,17 @@ const Direaction: React.FC = () => {
       },
     });
   };
+  const GetStats = async () => {
+    try {
+      const { data } = await GetUniverStatConfig();
+      setStats(data);
+    } catch (error) {
+      CatchError(error);
+    }
+  };
 
   useEffect(() => {
+    GetStats();
     GetMyDirections();
     GetDirectionsList();
   }, []);
@@ -188,61 +199,18 @@ const Direaction: React.FC = () => {
   return (
     <div className="flex">
       <div className="college__info">
-        <ul>
-          <li>
-            <span>Viloyat:</span>
-            <h4>Buxoro</h4>
-          </li>
-          <li>
-            <span>Manzil:</span>
-            <h4>Buxoro</h4>
-          </li>
-          <li>
-            <span>Telfon raqami:</span>
-            <h4>+998901232334</h4>
-          </li>
-          <li>
-            <span>Direktor:</span>
-            <h4>Askarov Abror Akmal o‘g’li</h4>
-          </li>
-        </ul>
-
-        <div className="flex">
-          <span>Fan (amaliyot) haqida</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Videodarslar</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Taqdimot (prezentatsiya)</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Nazariy (maʼruza) qismi uchun matnlar</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Maʼruzalar boʻyicha test savollari</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Oraliq baholash uchun test savollari</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Amaliy mashgʻulotlar uchun qoʻllanmalar</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Amaliy mashgʻulotlar uchun nazorat topshiriqlari</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Elektron manbalarga havolalar</span>
-          <h4>34</h4>
-        </div>
+        {stats.length > 0 ? (
+          stats?.map((item: any, index: number) => (
+            <div className="flex" key={index}>
+              <span>{item?.type}</span>
+              <h4>{item?.count}</h4>
+            </div>
+          ))
+        ) : (
+          <h3 style={{ fontWeight: 500, fontSize: 17 }}>
+            Hech qanday resurs yuklanmagan !
+          </h3>
+        )}
       </div>
 
       <div className="college__directions">

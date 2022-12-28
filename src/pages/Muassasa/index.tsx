@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "src/styles/college.scss";
 import Button from "antd/es/button";
 import Header from "src/components/Header";
+import { CatchError } from "src/utils/index";
+import { setUser } from "src/store/slices/user";
+import { useAppDispatch, useAppSelector } from "src/hooks/index";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { GetUserInfoConfig } from "src/server/config/Urls";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Muassasa: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+  const userInfo = useAppSelector((state) => state.User.user);
 
   const GiveTitle = () => {
     let keyword = pathname.split("/college/")[1];
@@ -34,6 +40,21 @@ const Muassasa: React.FC = () => {
     }
   };
 
+  const GetInfo = async () => {
+    if (Object.keys(userInfo).length < 1) {
+      try {
+        const { data } = await GetUserInfoConfig();
+        dispatch(setUser(data));
+      } catch (error) {
+        CatchError(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    GetInfo();
+  }, []);
+
   return (
     <div className="college">
       <Header />
@@ -41,8 +62,8 @@ const Muassasa: React.FC = () => {
       <h1>
         {(GiveTitle() == "Fanlar" || GiveTitle() == "Mavzular") && (
           <Button
-            style={{ marginRight: 16 }}
             onClick={goLast}
+            style={{ marginRight: 16 }}
             icon={<ArrowLeftOutlined />}
           >
             Orqaga qaytish

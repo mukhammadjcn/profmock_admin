@@ -4,6 +4,9 @@ import { GetFunc, EditFunc, CreateFunc, DeleteFunc } from "./Requests";
 export const SignInOneIDConfig = (code) => {
   return CreateFunc(`/auth/oneIdAuthEduAdmin/signIn?code=${code}`);
 };
+export const GetUserInfoConfig = () => {
+  return GetFunc(`/eduadmin/userInfo`);
+};
 
 // Get Directions
 export const GetDirectionsConfig = () => {
@@ -56,4 +59,9 @@ export const DelResourceConfig = (id) => {
 };
 export const DelThemeConfig = (id) => {
   return DeleteFunc(`/eduadmin/deleteTheme?themeId=${id}`);
+};
+
+// Stats
+export const GetUniverStatConfig = () => {
+  return GetFunc(`/statistic/getResourceCountByEdu`);
 };
