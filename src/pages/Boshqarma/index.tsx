@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "src/styles/college.scss";
 import Button from "antd/es/button";
 import Header from "src/components/Header";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { CatchError } from "src/utils/index";
+import { useAppDispatch, useAppSelector } from "src/hooks/index";
+import { GetBoshqarmaInfoConfig } from "src/server/config/Urls";
+import { setUser } from "src/store/slices/user";
 
 const Muassasa: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+  const userInfo = useAppSelector((state) => state.User.user);
 
   const GiveTitle = () => {
     let keyword = pathname.split("/administration/")[1];
@@ -16,11 +22,13 @@ const Muassasa: React.FC = () => {
       ? "Statistika"
       : keyword?.includes("sozlama")
       ? "Sozlamalar"
-      : keyword?.includes("direction/subject/theme")
+      : keyword?.includes("directions/subject/theme")
       ? "Mavzular"
-      : keyword?.includes("direction/subject")
+      : keyword?.includes("directions/subject")
       ? "Fanlar"
-      : "Hududdagi universitetlar ro'yhati";
+      : keyword?.includes("directions")
+      ? "Ta'lim muassasaning mutaxasisliklari ro'yhati"
+      : "Ta'lim muassasalari ro'yhati";
   };
 
   const goLast = () => {
@@ -34,22 +42,37 @@ const Muassasa: React.FC = () => {
     }
   };
 
+  const GetInfo = async () => {
+    if (Object.keys(userInfo).length < 1) {
+      try {
+        const { data } = await GetBoshqarmaInfoConfig();
+        dispatch(setUser(data));
+      } catch (error) {
+        CatchError(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    GetInfo();
+  }, []);
+
   return (
     <div className="college">
       <Header />
 
       <h1>
-        {(GiveTitle() !== "Hududdagi universitetlar ro'yhati" ||
-          GiveTitle() !== "Statistika" ||
-          GiveTitle() !== "Sozlamalar") && (
-          <Button
-            style={{ marginRight: 16 }}
-            onClick={goLast}
-            icon={<ArrowLeftOutlined />}
-          >
-            Orqaga qaytish
-          </Button>
-        )}
+        {GiveTitle() !== "Ta'lim muassasalari ro'yhati" &&
+          GiveTitle() !== "Statistika" &&
+          GiveTitle() !== "Sozlamalar" && (
+            <Button
+              style={{ marginRight: 16 }}
+              onClick={goLast}
+              icon={<ArrowLeftOutlined />}
+            >
+              Orqaga qaytish
+            </Button>
+          )}
         {GiveTitle()}
       </h1>
 

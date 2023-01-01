@@ -8,7 +8,7 @@ import {
 import { role } from "src/server/Host";
 
 const Header: React.FC = () => {
-  if (role == "ROLE_MANAGMENT") {
+  if (role == "ROLE_MANAGEMENTADMIN") {
     return (
       <div className="p8-32 header">
         <Link to={"/administration/statistcs"} className="logo">
@@ -39,7 +39,7 @@ const Header: React.FC = () => {
           </NavLink>
         </ul>
 
-        <h3>Askarov Abror Managment</h3>
+        <h3>Tizimdan chiqish</h3>
       </div>
     );
   }
@@ -73,7 +73,7 @@ const Header: React.FC = () => {
         </NavLink>
       </ul>
 
-      <h3>Askarov Abror</h3>
+      <h3>Tizimdan chiqish</h3>
     </div>
   );
 };

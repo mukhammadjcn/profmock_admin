@@ -32,6 +32,8 @@ const App: React.FC = () => {
           element={
             token && role == "ROLE_EDUADMIN" ? (
               <Navigate to="/college/statistcs" />
+            ) : token && role == "ROLE_MANAGEMENTADMIN" ? (
+              <Navigate to="/administration/statistcs" />
             ) : (
               <Login />
             )
@@ -67,7 +69,7 @@ const App: React.FC = () => {
         <Route
           path="administration"
           element={
-            token && role == "ROLE_MANAGMENT" ? (
+            token && role == "ROLE_MANAGEMENTADMIN" ? (
               <Boshqarma />
             ) : (
               <Navigate to="/" />

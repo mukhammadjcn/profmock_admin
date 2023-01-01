@@ -9,9 +9,11 @@ import {
   GetUniverStatConfig,
   GetDirectionsConfig,
   GetMyDirectionsConfig,
+  GetUniverDirectionsConfig,
 } from "src/server/config/Urls";
 import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, Table, Form, Select, SelectProps, message } from "antd";
+import { role } from "src/server/Host";
 
 const Direaction: React.FC = () => {
   const [form] = Form.useForm();
@@ -58,10 +60,32 @@ const Direaction: React.FC = () => {
           danger
           type="primary"
           icon={<DeleteOutlined />}
-          // disabled={item.subject_number > 0}
+          disabled={item.subject_number > 0}
           onClick={() => DeleteDirection(+item.key)}
         />
       ),
+    },
+  ];
+  const columnsBoshqarma: ColumnsType<IDirections> = [
+    {
+      title: "Mutaxassislik nomi",
+      dataIndex: "name",
+      key: "name",
+      render: (_, item) => (
+        <Link
+          to={`/administration/universities/directions/subject?semesterId=1&directionEduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
+          {item.name}
+        </Link>
+      ),
+    },
+    {
+      title: "Fanlar soni",
+      dataIndex: "subject_number",
+      key: "subject_number",
+      align: "center",
+      width: 200,
     },
   ];
   const selectProps: SelectProps = {
@@ -89,7 +113,7 @@ const Direaction: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
-    GetMyDirections();
+    role == "ROLE_EDUADMIN" ? GetMyDirections() : GetDirectionListManagment();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -101,6 +125,7 @@ const Direaction: React.FC = () => {
     return url.length > 2 ? url : "";
   };
 
+  // For edu admin
   const GetDirectionsList = async () => {
     try {
       const { data } = await GetDirectionsConfig();
@@ -190,38 +215,81 @@ const Direaction: React.FC = () => {
     }
   };
 
+  // For Managment admin
+  const GetDirectionListManagment = async () => {
+    setLoading(true);
+    try {
+      const { data } = await GetUniverDirectionsConfig(urlMaker());
+
+      // Set pagination data
+      setTotal(data.totalElements);
+
+      // Set Data
+      setDirections(
+        data?.content.reduce(
+          (prev: any, next: any) => [
+            ...prev,
+            {
+              key: next?.directionEduId,
+              name: `${next?.code} - ${next?.name}`,
+              subject_number: next?.subjectCount ?? 0,
+            },
+          ],
+          []
+        )
+      );
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+
+  // Get functions by role
+  const getByRole = () => {
+    if (role == "ROLE_EDUADMIN") {
+      GetStats();
+      GetMyDirections();
+      GetDirectionsList();
+    } else {
+      GetDirectionListManagment();
+    }
+  };
+
   useEffect(() => {
-    GetStats();
-    GetMyDirections();
-    GetDirectionsList();
+    getByRole();
   }, []);
 
   return (
     <div className="flex">
-      <div className="college__info">
-        {stats.length > 0 ? (
-          stats?.map((item: any, index: number) => (
-            <div className="flex" key={index}>
-              <span>{item?.type}</span>
-              <h4>{item?.count}</h4>
-            </div>
-          ))
-        ) : (
-          <h3 style={{ fontWeight: 500, fontSize: 17 }}>
-            Hech qanday resurs yuklanmagan !
-          </h3>
-        )}
-      </div>
+      {role == "ROLE_EDUADMIN" && (
+        <div className="college__info">
+          {stats.length > 0 ? (
+            stats?.map((item: any, index: number) => (
+              <div className="flex" key={index}>
+                <span>{item?.type}</span>
+                <h4>{item?.count}</h4>
+              </div>
+            ))
+          ) : (
+            <h3 style={{ fontWeight: 500, fontSize: 17 }}>
+              Hech qanday resurs yuklanmagan !
+            </h3>
+          )}
+        </div>
+      )}
 
       <div className="college__directions">
-        <div className="flex">
-          <h4>Ta'lim muassasaning mutaxasisliklari ro'yhati</h4>
-          <Button type="primary" onClick={() => setIsModalOpen(true)}>
-            Yo'nalish qoshish
-          </Button>
-        </div>
+        {role == "ROLE_EDUADMIN" && (
+          <div className="flex">
+            <h4>Ta'lim muassasaning mutaxasisliklari ro'yhati</h4>
+            <Button type="primary" onClick={() => setIsModalOpen(true)}>
+              Yo'nalish qoshish
+            </Button>
+          </div>
+        )}
+
         <Table
-          columns={columns}
+          columns={role == "ROLE_EDUADMIN" ? columns : columnsBoshqarma}
           dataSource={directions}
           loading={loading}
           onChange={setPage}

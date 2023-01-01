@@ -65,3 +65,25 @@ export const DelThemeConfig = (id) => {
 export const GetUniverStatConfig = () => {
   return GetFunc(`/statistic/getResourceCountByEdu`);
 };
+
+//  Managment API----------------------------------------------------------------
+
+// Get all universities
+export const GetBoshqarmaInfoConfig = () => {
+  return GetFunc(`/management/userInfo`);
+};
+export const GetMyCollegesConfig = (params) => {
+  return GetFunc(`/management/getAllEduAdmin?size=10${params ?? ""}`);
+};
+export const GetUniverDirectionsConfig = (params) => {
+  return GetFunc(`/management/getAllDirectionEdu?size=10${params ?? ""}`);
+};
+export const GetUniverSubjectsConfig = (params) => {
+  return GetFunc(`/management/getAllSubjectDirection?size=10${params ?? ""}`);
+};
+export const GetUniverThemesConfig = (params) => {
+  return GetFunc(`/management/allTheme?size=10${params ?? ""}`);
+};
+export const GetUniverResourceConfig = (id) => {
+  return GetFunc(`/management/getAllResource?themeId=${id}`);
+};

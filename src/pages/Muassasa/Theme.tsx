@@ -11,6 +11,7 @@ import {
   message,
   Collapse,
   Pagination,
+  Alert,
 } from "antd";
 import {
   PostFileConfig,
@@ -21,6 +22,8 @@ import {
   DelSubjectConfig,
   DelResourceConfig,
   DelThemeConfig,
+  GetUniverThemesConfig,
+  GetUniverResourceConfig,
 } from "src/server/config/Urls";
 import { ITheme } from "types/index";
 import { RcFile } from "antd/es/upload";
@@ -33,6 +36,7 @@ import {
   DeleteOutlined,
   ExclamationCircleFilled,
 } from "@ant-design/icons";
+import { role } from "src/server/Host";
 
 const Theme: React.FC = () => {
   const [form] = Form.useForm();
@@ -112,16 +116,19 @@ const Theme: React.FC = () => {
     }
     return e?.fileList[0];
   };
-  const delTheme = (id: number) => (
-    <DeleteOutlined
-      onClick={(event) => {
-        // If you don't want click extra trigger collapse, you can prevent this:
-        event.stopPropagation();
+  const delTheme = (id: number) =>
+    role == "ROLE_EDUADMIN" ? (
+      <DeleteOutlined
+        onClick={(event) => {
+          // If you don't want click extra trigger collapse, you can prevent this:
+          event.stopPropagation();
 
-        DeleteTheme(id);
-      }}
-    />
-  );
+          DeleteTheme(id);
+        }}
+      />
+    ) : (
+      false
+    );
 
   const CreateTheme = async ({ name }: { name: string }) => {
     try {
@@ -140,7 +147,10 @@ const Theme: React.FC = () => {
   const GetMyThemes = async () => {
     setLoading(true);
     try {
-      const { data } = await GetMyThemesConfig(urlMaker());
+      const { data } =
+        role == "ROLE_EDUADMIN"
+          ? await GetMyThemesConfig(urlMaker())
+          : await GetUniverThemesConfig(urlMaker());
 
       // Set pagination data
       setTotal(data.totalElements);
@@ -157,7 +167,10 @@ const Theme: React.FC = () => {
       setThemeId(+id);
       setLoadingIn(true);
       try {
-        const { data } = await GetAllResourceConfig(id);
+        const { data } =
+          role == "ROLE_EDUADMIN"
+            ? await GetAllResourceConfig(id)
+            : await GetUniverResourceConfig(id);
         setResources(data);
       } catch (error) {
         CatchError(error);
@@ -246,13 +259,15 @@ const Theme: React.FC = () => {
       <div className="theme__header">
         <h1>Mavzular</h1>
 
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Fan qo'shish
-        </Button>
+        {role == "ROLE_EDUADMIN" && (
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Mavzu qo'shish
+          </Button>
+        )}
       </div>
 
       {themes.length == 0 ? (
@@ -317,27 +332,38 @@ const Theme: React.FC = () => {
                                 count={`Yuklab olishlar soni: ${i?.countDownload}`}
                                 color="#003A8C"
                               />
-                              <Button
-                                danger
-                                type="primary"
-                                icon={<DeleteOutlined />}
-                                onClick={() => DeleteResource(i?.id)}
-                              />
+                              {role == "ROLE_EDUADMIN" && (
+                                <Button
+                                  danger
+                                  type="primary"
+                                  icon={<DeleteOutlined />}
+                                  onClick={() => DeleteResource(i?.id)}
+                                />
+                              )}
                             </div>
                           </div>
                         ))}
 
-                        <Button
-                          type="dashed"
-                          onClick={() => {
-                            setThemeId(theme.themeId);
-                            setIsModalFile(true);
-                          }}
-                          icon={<PlusOutlined />}
-                          style={{ marginTop: 16, width: "100%", height: 56 }}
-                        >
-                          Resurs qo‘shish
-                        </Button>
+                        {role == "ROLE_EDUADMIN" && (
+                          <Button
+                            type="dashed"
+                            onClick={() => {
+                              setThemeId(theme.themeId);
+                              setIsModalFile(true);
+                            }}
+                            icon={<PlusOutlined />}
+                            style={{ marginTop: 16, width: "100%", height: 56 }}
+                          >
+                            Resurs qo‘shish
+                          </Button>
+                        )}
+
+                        {resources.length == 0 && role !== "ROLE_EDUADMIN" && (
+                          <Alert
+                            message="Birorta resurs mavjud emas !"
+                            type="error"
+                          />
+                        )}
                       </div>
                     </Spin>
                   </Collapse.Panel>

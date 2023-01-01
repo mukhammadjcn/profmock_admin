@@ -21,3 +21,10 @@ export interface ITheme {
   themeId: number;
   themeName: string;
 }
+
+// -------------------------------------
+export interface IUniverList {
+  key: string;
+  eduName: string;
+  district: string;
+}
