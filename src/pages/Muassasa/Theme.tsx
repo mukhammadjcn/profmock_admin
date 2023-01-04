@@ -18,13 +18,19 @@ import {
   GetMyThemesConfig,
   PostResourceConfig,
   GetAllResourceConfig,
+  DelResourceConfig,
 } from "src/server/config/Urls";
 import { ITheme } from "types/index";
 import { RcFile } from "antd/es/upload";
 import { CatchError } from "src/utils/index";
 import { useSearchParams } from "react-router-dom";
 import NoData from "src/components/animation/NoData";
-import { PlusOutlined, DeleteOutlined, InboxOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  InboxOutlined,
+  DeleteOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 
 const Theme: React.FC = () => {
   const [form] = Form.useForm();
@@ -179,6 +185,22 @@ const Theme: React.FC = () => {
       }
     }
   };
+  const DeleteResource = async (id: number) => {
+    Modal.confirm({
+      title: "Haqiqatdan ham bu fanni o'chirasizmi ?",
+      icon: <ExclamationCircleFilled />,
+      content: "Keyinchalik bu yo'nalishni qayta qo'shib olishingiz mumkin ",
+      async onOk() {
+        try {
+          await DelResourceConfig(id);
+          message.success("Muvofaqqiyatli o'chirildi )");
+          GetResources(themeId.toString());
+        } catch (error) {
+          CatchError(error);
+        }
+      },
+    });
+  };
 
   useEffect(() => {
     GetMyThemes();
@@ -260,7 +282,7 @@ const Theme: React.FC = () => {
                                 danger
                                 type="primary"
                                 icon={<DeleteOutlined />}
-                                onClick={() => alert(i)}
+                                onClick={() => DeleteResource(i?.id)}
                               />
                             </div>
                           </div>
