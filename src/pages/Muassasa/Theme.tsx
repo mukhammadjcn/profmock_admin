@@ -47,6 +47,7 @@ const Theme: React.FC = () => {
   const [loadingIn, setLoadingIn] = useState(false);
   const [isModalFile, setIsModalFile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // For pagination
@@ -196,6 +197,10 @@ const Theme: React.FC = () => {
       }
     } else {
       try {
+        // set loading true
+        setUploadLoading(true);
+
+        // Gettin data
         let formData = new FormData();
         formData.append("file", file?.originFileObj);
 
@@ -205,6 +210,9 @@ const Theme: React.FC = () => {
           type,
           themeId,
         });
+
+        // upload loading false
+        setUploadLoading(false);
 
         message.success("Muvofaqqiyatli qo'shildi");
         setIsModalFile(false);
@@ -521,8 +529,15 @@ const Theme: React.FC = () => {
           )}
 
           <div className="flex" style={{ justifyContent: "flex-end" }}>
-            <Button htmlType="submit">Orqaga</Button>
-            <Button htmlType="submit" type="primary">
+            <Button
+              onClick={() => {
+                setIsModalFile(false);
+                formFile.resetFields();
+              }}
+            >
+              Orqaga
+            </Button>
+            <Button htmlType="submit" type="primary" loading={uploadLoading}>
               Yuborish
             </Button>
           </div>

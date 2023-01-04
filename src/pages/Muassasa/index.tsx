@@ -26,7 +26,7 @@ const Muassasa: React.FC = () => {
       ? "Mavzular"
       : keyword?.includes("direction/subject")
       ? "Fanlar"
-      : "O‘zbekiston davlat jahon tillari universiteti";
+      : userInfo?.eduName;
   };
 
   const goLast = () => {
