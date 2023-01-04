@@ -15,18 +15,16 @@ import {
 } from "antd";
 import {
   PostFileConfig,
+  DelThemeConfig,
   PostThemeConfig,
+  DelResourceConfig,
   GetMyThemesConfig,
   PostResourceConfig,
   GetAllResourceConfig,
-  DelSubjectConfig,
-  DelResourceConfig,
-  DelThemeConfig,
   GetUniverThemesConfig,
   GetUniverResourceConfig,
 } from "src/server/config/Urls";
 import { ITheme } from "types/index";
-import { RcFile } from "antd/es/upload";
 import { CatchError } from "src/utils/index";
 import { useSearchParams } from "react-router-dom";
 import NoData from "src/components/animation/NoData";

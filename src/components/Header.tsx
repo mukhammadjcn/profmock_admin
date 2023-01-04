@@ -4,10 +4,23 @@ import {
   ClusterOutlined,
   SettingOutlined,
   DashboardOutlined,
+  ExclamationCircleFilled,
 } from "@ant-design/icons";
 import { role } from "src/server/Host";
+import { Modal } from "antd";
 
 const Header: React.FC = () => {
+  const logout = () => {
+    Modal.confirm({
+      title: "Haqiqatdan ham tizimdan chiqmoqchimisiz ?",
+      icon: <ExclamationCircleFilled />,
+      async onOk() {
+        localStorage.clear();
+        window.location.href = "/";
+      },
+    });
+  };
+
   if (role == "ROLE_MANAGEMENTADMIN") {
     return (
       <div className="p8-32 header">
@@ -39,7 +52,7 @@ const Header: React.FC = () => {
           </NavLink>
         </ul>
 
-        <h3>Tizimdan chiqish</h3>
+        <h3 onClick={logout}>Tizimdan chiqish</h3>
       </div>
     );
   }
@@ -73,7 +86,7 @@ const Header: React.FC = () => {
         </NavLink>
       </ul>
 
-      <h3>Tizimdan chiqish</h3>
+      <h3 onClick={logout}>Tizimdan chiqish</h3>
     </div>
   );
 };
