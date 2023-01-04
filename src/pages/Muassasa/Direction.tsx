@@ -4,16 +4,20 @@ import { ColumnsType } from "antd/es/table";
 import { CatchError, LastPage } from "src/utils/index";
 import { IList, IDirections } from "src/types/index";
 import {
+  DelDirectionConfig,
   PostDirectionConfig,
+  GetUniverStatConfig,
   GetDirectionsConfig,
   GetMyDirectionsConfig,
-  DelDirectionConfig,
+  GetUniverDirectionsConfig,
 } from "src/server/config/Urls";
 import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, Table, Form, Select, SelectProps, message } from "antd";
+import { role } from "src/server/Host";
 
 const Direaction: React.FC = () => {
   const [form] = Form.useForm();
+  const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,6 +66,28 @@ const Direaction: React.FC = () => {
       ),
     },
   ];
+  const columnsBoshqarma: ColumnsType<IDirections> = [
+    {
+      title: "Mutaxassislik nomi",
+      dataIndex: "name",
+      key: "name",
+      render: (_, item) => (
+        <Link
+          to={`/administration/universities/directions/subject?semesterId=1&directionEduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
+          {item.name}
+        </Link>
+      ),
+    },
+    {
+      title: "Fanlar soni",
+      dataIndex: "subject_number",
+      key: "subject_number",
+      align: "center",
+      width: 200,
+    },
+  ];
   const selectProps: SelectProps = {
     mode: "multiple",
     showSearch: true,
@@ -87,7 +113,7 @@ const Direaction: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
-    GetMyDirections();
+    role == "ROLE_EDUADMIN" ? GetMyDirections() : GetDirectionListManagment();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -99,6 +125,7 @@ const Direaction: React.FC = () => {
     return url.length > 2 ? url : "";
   };
 
+  // For edu admin
   const GetDirectionsList = async () => {
     try {
       const { data } = await GetDirectionsConfig();
@@ -179,81 +206,90 @@ const Direaction: React.FC = () => {
       },
     });
   };
+  const GetStats = async () => {
+    try {
+      const { data } = await GetUniverStatConfig();
+      setStats(data);
+    } catch (error) {
+      CatchError(error);
+    }
+  };
+
+  // For Managment admin
+  const GetDirectionListManagment = async () => {
+    setLoading(true);
+    try {
+      const { data } = await GetUniverDirectionsConfig(urlMaker());
+
+      // Set pagination data
+      setTotal(data.totalElements);
+
+      // Set Data
+      setDirections(
+        data?.content.reduce(
+          (prev: any, next: any) => [
+            ...prev,
+            {
+              key: next?.directionEduId,
+              name: `${next?.code} - ${next?.name}`,
+              subject_number: next?.subjectCount ?? 0,
+            },
+          ],
+          []
+        )
+      );
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+
+  // Get functions by role
+  const getByRole = () => {
+    if (role == "ROLE_EDUADMIN") {
+      GetStats();
+      GetMyDirections();
+      GetDirectionsList();
+    } else {
+      GetDirectionListManagment();
+    }
+  };
 
   useEffect(() => {
-    GetMyDirections();
-    GetDirectionsList();
+    getByRole();
   }, []);
 
   return (
     <div className="flex">
-      <div className="college__info">
-        <ul>
-          <li>
-            <span>Viloyat:</span>
-            <h4>Buxoro</h4>
-          </li>
-          <li>
-            <span>Manzil:</span>
-            <h4>Buxoro</h4>
-          </li>
-          <li>
-            <span>Telfon raqami:</span>
-            <h4>+998901232334</h4>
-          </li>
-          <li>
-            <span>Direktor:</span>
-            <h4>Askarov Abror Akmal o‘g’li</h4>
-          </li>
-        </ul>
-
-        <div className="flex">
-          <span>Fan (amaliyot) haqida</span>
-          <h4>34</h4>
+      {role == "ROLE_EDUADMIN" && (
+        <div className="college__info">
+          {stats.length > 0 ? (
+            stats?.map((item: any, index: number) => (
+              <div className="flex" key={index}>
+                <span>{item?.type}</span>
+                <h4>{item?.count}</h4>
+              </div>
+            ))
+          ) : (
+            <h3 style={{ fontWeight: 500, fontSize: 17 }}>
+              Hech qanday resurs yuklanmagan !
+            </h3>
+          )}
         </div>
-        <div className="flex">
-          <span>Videodarslar</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Taqdimot (prezentatsiya)</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Nazariy (maʼruza) qismi uchun matnlar</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Maʼruzalar boʻyicha test savollari</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Oraliq baholash uchun test savollari</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Amaliy mashgʻulotlar uchun qoʻllanmalar</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Amaliy mashgʻulotlar uchun nazorat topshiriqlari</span>
-          <h4>34</h4>
-        </div>
-        <div className="flex">
-          <span>Elektron manbalarga havolalar</span>
-          <h4>34</h4>
-        </div>
-      </div>
+      )}
 
       <div className="college__directions">
-        <div className="flex">
-          <h4>Ta'lim muassasaning mutaxasisliklari ro'yhati</h4>
-          <Button type="primary" onClick={() => setIsModalOpen(true)}>
-            Yo'nalish qoshish
-          </Button>
-        </div>
+        {role == "ROLE_EDUADMIN" && (
+          <div className="flex">
+            <h4>Ta'lim muassasaning mutaxasisliklari ro'yhati</h4>
+            <Button type="primary" onClick={() => setIsModalOpen(true)}>
+              Yo'nalish qoshish
+            </Button>
+          </div>
+        )}
+
         <Table
-          columns={columns}
+          columns={role == "ROLE_EDUADMIN" ? columns : columnsBoshqarma}
           dataSource={directions}
           loading={loading}
           onChange={setPage}

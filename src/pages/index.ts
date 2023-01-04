@@ -16,6 +16,10 @@ import MuassasaTheme from "./Muassasa/Theme";
 import MuassasaSubject from "./Muassasa/Subject";
 import MuassasaDirection from "./Muassasa/Direction";
 
+// Boshqarma Page
+import Boshqarma from "./Boshqarma";
+import BoshqarmaUniversities from "./Boshqarma/BoshqarmaUniversities";
+
 export {
   Login,
   Status,
@@ -26,4 +30,6 @@ export {
   MuassasaTheme,
   MuassasaSubject,
   MuassasaDirection,
+  Boshqarma,
+  BoshqarmaUniversities,
 };

@@ -26,7 +26,9 @@ import {
   DelDirectionConfig,
   GetMySubjectsConfig,
   DelSubjectConfig,
+  GetUniverSubjectsConfig,
 } from "src/server/config/Urls";
+import { role } from "src/server/Host";
 
 const Subject: React.FC = () => {
   const [form] = Form.useForm();
@@ -108,6 +110,47 @@ const Subject: React.FC = () => {
       ),
     },
   ];
+  const columnsBoshqarma: ColumnsType<ISubject> = [
+    {
+      title: "Fan nomi",
+      dataIndex: "name",
+      key: "name",
+      render: (_, item) => (
+        <Link
+          to={`/administration/universities/directions/subject/theme?directionSubjectEduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
+          {item.name}
+        </Link>
+      ),
+    },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   width: 180,
+    //   render: (_, item) =>
+    //     item.status ? (
+    //       <Badge status="success" text="File yuklangan" />
+    //     ) : (
+    //       <Badge status="error" text="File yuklanmagan" />
+    //     ),
+    // },
+    {
+      title: "Mavzular soni",
+      dataIndex: "theme_number",
+      key: "theme_number",
+      align: "center",
+      width: 150,
+    },
+    {
+      title: "Resurslar soni",
+      dataIndex: "resurs_number",
+      key: "resurs_number",
+      align: "center",
+      width: 150,
+    },
+  ];
   const selectProps: SelectProps = {
     mode: "multiple",
     showSearch: true,
@@ -133,13 +176,13 @@ const Subject: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
-    GetMyDirections();
+    role == "ROLE_EDUADMIN" ? GetMySubjects() : GetSubjectsMangmentList();
     window.scrollTo(0, 0);
   };
   const setSemester = (val: any) => {
     setCurrentSem(val);
     handleMakeParams("semesterId", val);
-    GetMyDirections();
+    role == "ROLE_EDUADMIN" ? GetMySubjects() : GetSubjectsMangmentList();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -151,6 +194,7 @@ const Subject: React.FC = () => {
     return url.length > 2 ? url : "";
   };
 
+  // For edu admin
   const GetSubjectsList = async () => {
     try {
       const { data } = await GetSubjectsConfig();
@@ -177,7 +221,7 @@ const Subject: React.FC = () => {
         semesterId: searchParams.get("semesterId") || 1,
         directionId: searchParams.get("directionEduId"),
       });
-      await GetMyDirections();
+      await GetMySubjects();
       message.success("Muvofaqqiyatli yuborildi !");
       form.resetFields();
       setIsModalOpen(false);
@@ -185,7 +229,7 @@ const Subject: React.FC = () => {
       CatchError(error);
     }
   };
-  const GetMyDirections = async () => {
+  const GetMySubjects = async () => {
     setLoading(true);
     try {
       const { data } = await GetMySubjectsConfig(urlMaker());
@@ -222,7 +266,7 @@ const Subject: React.FC = () => {
         try {
           await DelSubjectConfig(id);
           message.success("Muvofaqqiyatli o'chirildi )");
-          GetMyDirections();
+          GetMySubjects();
         } catch (error) {
           CatchError(error);
         }
@@ -230,9 +274,48 @@ const Subject: React.FC = () => {
     });
   };
 
+  // For managment admin
+  const GetSubjectsMangmentList = async () => {
+    setLoading(true);
+    try {
+      const { data } = await GetUniverSubjectsConfig(urlMaker());
+
+      // Set pagination data
+      setTotal(data.totalElements);
+
+      // Set Data
+      setSubjects(
+        data?.content.reduce(
+          (prev: any, next: any) => [
+            ...prev,
+            {
+              name: next?.name,
+              key: next?.subjectDirectionEduId,
+              theme_number: next?.countTheme ?? 0,
+              resurs_number: next?.countResource ?? 0,
+            },
+          ],
+          []
+        )
+      );
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+
+  // Get functions by role
+  const getByRole = () => {
+    if (role == "ROLE_EDUADMIN") {
+      GetMySubjects();
+      GetSubjectsList();
+    } else {
+      GetSubjectsMangmentList();
+    }
+  };
+
   useEffect(() => {
-    GetMyDirections();
-    GetSubjectsList();
+    getByRole();
   }, []);
 
   return (
@@ -276,18 +359,20 @@ const Subject: React.FC = () => {
             },
           ]}
         />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Fan qo'shish
-        </Button>
+        {role == "ROLE_EDUADMIN" && (
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Fan qo'shish
+          </Button>
+        )}
       </div>
 
       <div className="subject__table">
         <Table
-          columns={columns}
+          columns={role == "ROLE_EDUADMIN" ? columns : columnsBoshqarma}
           dataSource={subjects}
           loading={loading}
           onChange={setPage}

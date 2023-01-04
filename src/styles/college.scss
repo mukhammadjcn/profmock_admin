@@ -76,6 +76,7 @@
       color: rgba(0, 0, 0, 0.85);
     }
     li {
+      gap: 36px;
       padding: 10px;
       justify-content: space-between;
       span {
@@ -83,6 +84,7 @@
         font-size: 16px;
         line-height: 22px;
         color: #595959;
+        flex-shrink: 0;
       }
       h4 {
         font-weight: 600;
@@ -102,8 +104,9 @@
     }
     &__withImage {
       .ant-image {
-        width: 240px;
-        height: 300px;
+        width: 180px;
+        height: 240px;
+        flex-shrink: 0;
         img {
           height: 100%;
           object-fit: cover;

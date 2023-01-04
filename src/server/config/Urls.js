@@ -4,6 +4,9 @@ import { GetFunc, EditFunc, CreateFunc, DeleteFunc } from "./Requests";
 export const SignInOneIDConfig = (code) => {
   return CreateFunc(`/auth/oneIdAuthEduAdmin/signIn?code=${code}`);
 };
+export const GetUserInfoConfig = () => {
+  return GetFunc(`/eduadmin/userInfo`);
+};
 
 // Get Directions
 export const GetDirectionsConfig = () => {
@@ -53,4 +56,34 @@ export const PostResourceConfig = (data) => {
 };
 export const DelResourceConfig = (id) => {
   return DeleteFunc(`/eduadmin/deleteResource/${id}`);
+};
+export const DelThemeConfig = (id) => {
+  return DeleteFunc(`/eduadmin/deleteTheme?themeId=${id}`);
+};
+
+// Stats
+export const GetUniverStatConfig = () => {
+  return GetFunc(`/statistic/getResourceCountByEdu`);
+};
+
+//  Managment API----------------------------------------------------------------
+
+// Get all universities
+export const GetBoshqarmaInfoConfig = () => {
+  return GetFunc(`/management/userInfo`);
+};
+export const GetMyCollegesConfig = (params) => {
+  return GetFunc(`/management/getAllEduAdmin?size=10${params ?? ""}`);
+};
+export const GetUniverDirectionsConfig = (params) => {
+  return GetFunc(`/management/getAllDirectionEdu?size=10${params ?? ""}`);
+};
+export const GetUniverSubjectsConfig = (params) => {
+  return GetFunc(`/management/getAllSubjectDirection?size=10${params ?? ""}`);
+};
+export const GetUniverThemesConfig = (params) => {
+  return GetFunc(`/management/allTheme?size=10${params ?? ""}`);
+};
+export const GetUniverResourceConfig = (id) => {
+  return GetFunc(`/management/getAllResource?themeId=${id}`);
 };

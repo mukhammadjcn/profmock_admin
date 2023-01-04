@@ -5,8 +5,44 @@ import {
   SettingOutlined,
   DashboardOutlined,
 } from "@ant-design/icons";
+import { role } from "src/server/Host";
 
 const Header: React.FC = () => {
+  if (role == "ROLE_MANAGEMENTADMIN") {
+    return (
+      <div className="p8-32 header">
+        <Link to={"/administration/statistcs"} className="logo">
+          <img src={require("src/assets/images/logo.png")} alt="" />
+          <span>Profmoc.edu.uz</span>
+        </Link>
+
+        <ul className="flex">
+          <NavLink
+            to={"/administration/statistcs"}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <DashboardOutlined />
+            Statistika
+          </NavLink>
+          <NavLink
+            to={"/administration/universities"}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <ClusterOutlined /> Ta’lim muasassalari ro'yhati
+          </NavLink>
+          <NavLink
+            to={"/administration/sozlama"}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <SettingOutlined />
+            Sozlamalar
+          </NavLink>
+        </ul>
+
+        <h3>Tizimdan chiqish</h3>
+      </div>
+    );
+  }
   return (
     <div className="p8-32 header">
       <Link to={"/college/statistcs"} className="logo">
@@ -37,7 +73,7 @@ const Header: React.FC = () => {
         </NavLink>
       </ul>
 
-      <h3>Askarov Abror</h3>
+      <h3>Tizimdan chiqish</h3>
     </div>
   );
 };
