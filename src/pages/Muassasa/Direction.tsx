@@ -325,7 +325,14 @@ const Direaction: React.FC = () => {
           </Form.Item>
 
           <div className="flex" style={{ justifyContent: "flex-end" }}>
-            <Button htmlType="submit">Orqaga</Button>
+            <Button
+              onClick={() => {
+                setIsModalOpen(false);
+                form.resetFields();
+              }}
+            >
+              Orqaga
+            </Button>
             <Button htmlType="submit" type="primary">
               Yuborish
             </Button>
