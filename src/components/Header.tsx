@@ -18,6 +18,8 @@ const Header: React.FC = () => {
         localStorage.clear();
         window.location.href = "/";
       },
+      okText: "Chiqish",
+      cancelText: "Bekor qilish",
     });
   };
 

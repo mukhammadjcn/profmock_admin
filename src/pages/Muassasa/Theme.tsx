@@ -90,7 +90,13 @@ const Theme: React.FC = () => {
       return "doc";
     } else if (reversedName.split(".")[0] == "pdf") {
       return "pdf";
-    } else if (reversedName.split(".")[0] == "mp4") {
+    } else if (
+      reversedName[0] == "mp4" ||
+      reversedName[0] == "mov" ||
+      reversedName[0] == "avi" ||
+      reversedName[0] == "webm" ||
+      reversedName[0] == "mkv"
+    ) {
       return "mp4";
     } else {
       return "link";
@@ -128,6 +134,23 @@ const Theme: React.FC = () => {
     ) : (
       false
     );
+  const prettyName = (name: string) => {
+    let result = decodeURI(
+      name
+        .replace("http://", "")
+        .replace("https://", "")
+        .replace("prof-dist.edu.uz/api/user/download/", "")
+        .replace("prof-dist.edu.uz/api/user/videoStream/", "")
+    ).slice(6);
+
+    let reversed = result.split(".");
+    reversed.pop();
+
+    let fileName = reversed.join(".");
+
+    if (fileName.length <= 16) return fileName;
+    else return fileName.slice(0, 16) + `...`;
+  };
 
   const CreateTheme = async ({ name }: { name: string }) => {
     try {
@@ -306,14 +329,7 @@ const Theme: React.FC = () => {
                                 alignItems: "center",
                               }}
                             >
-                              <h3>
-                                {decodeURI(
-                                  i?.url?.replace(
-                                    "http://prof-dist.edu.uz/api/user/download/",
-                                    ""
-                                  )
-                                )}
-                              </h3>
+                              <h3>{prettyName(i?.url)}</h3>
 
                               {i?.type == "Elektron manbalarga havolalar" ? (
                                 <a href={i?.url} target="_blank">
