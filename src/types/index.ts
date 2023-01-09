@@ -28,3 +28,31 @@ export interface IUniverList {
   eduName: string;
   district: string;
 }
+
+// ------------------------------------------
+export interface IUser {
+  id: number;
+  fullName: string;
+  phoneNumber: string;
+  pinfl: string;
+  gender: string;
+  serialNumber: string;
+  eduName: string;
+  region: null | number;
+  eduAddress: string;
+  permanentAddress: string;
+  photo: string;
+  direction: string;
+}
+
+export interface ISubject {
+  subjectDirectionEduId: number;
+  name: string;
+  countTheme: number;
+  countResource: number;
+}
+
+export interface IApplication {
+  user: IUser;
+  subjects: ISubject[];
+}

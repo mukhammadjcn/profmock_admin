@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+// Some initial values
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+}
+p {
+  margin-bottom: 0;
+}
+
+// Color variables------------------------------------------------------
+$main: #444bd3;
+$white: #ffffff;
+$black: #121127;
+$text: rgba(18, 17, 39, 0.7);
+$gray: rgba(255, 255, 255, 0.56);
+// Color variables------------------------------------------------------
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 1300px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+button {
+  transition: 0.3s ease-in-out;
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@import url("./home.scss");
+@import url("./login.scss");

@@ -1,8 +1,11 @@
 import { GetFunc, EditFunc, CreateFunc, DeleteFunc } from "./Requests";
 
 // Login Configs ----------------------------------------------------------
-export const SignInOneIDConfig = (code) => {
+export const SignInOneIDAdminConfig = (code) => {
   return CreateFunc(`/auth/oneIdAuthEduAdmin/signIn?code=${code}`);
+};
+export const SignInOneIDUserConfig = (code) => {
+  return CreateFunc(`/auth/singInUserOneId?code=${code}`);
 };
 export const GetUserInfoConfig = () => {
   return GetFunc(`/eduadmin/userInfo`);
@@ -65,6 +68,9 @@ export const DelThemeConfig = (id) => {
 export const GetUniverStatConfig = () => {
   return GetFunc(`/statistic/getResourceCountByEdu`);
 };
+export const GetUserStatConfig = () => {
+  return GetFunc(`/statistic/countResourceAndUser`);
+};
 
 //  Managment API----------------------------------------------------------------
 
@@ -86,4 +92,33 @@ export const GetUniverThemesConfig = (params) => {
 };
 export const GetUniverResourceConfig = (id) => {
   return GetFunc(`/management/getAllResource?themeId=${id}`);
+};
+
+// User APi----------------------------------------------------------------------------------
+
+// Login Configs ----------------------------------------------------------
+export const LoginConfig = (data) => {
+  return CreateFunc("/auth/signInUser", data);
+};
+
+// Register Configs --------------------------------------------------------
+export const RegisterConfig = (data) => {
+  return CreateFunc("/auth/signUp", data);
+};
+export const RegisterCheckConfig = (data) => {
+  return CreateFunc("/auth/validateUser", data);
+};
+
+// Get user info -----------------------------------------------------------
+export const GetUserConfig = () => {
+  return GetFunc(`/user/userInfo`);
+};
+export const GetUserSubjectsConfig = (params) => {
+  return GetFunc(`/user/getSubjects?size=100${params ?? ""}`);
+};
+export const GetUserThemesConfig = (params) => {
+  return GetFunc(`/user/allTheme?size=10${params ?? ""}`);
+};
+export const GetUserResourcesConfig = (id) => {
+  return GetFunc(`/user/getAllResourceByUser?themeId=${id}`);
 };

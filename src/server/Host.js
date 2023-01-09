@@ -13,6 +13,11 @@ export const role = localStorage.getItem(ROLE);
 export const token = localStorage.getItem(ACCESS);
 export const refresh = localStorage.getItem(REFRESH);
 
+// Set localstorage items
+export const getLocal = (name) => localStorage.getItem(name);
+export const removeLocal = (name) => localStorage.removeItem(name);
+export const setLocal = (name, value) => localStorage.setItem(name, value);
+
 // Requests header
 export let headers = {
   "X-Requested-With": "XMLHttpRequest",

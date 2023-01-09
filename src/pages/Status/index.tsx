@@ -1,11 +1,11 @@
 import { message } from "antd";
 import React, { useEffect } from "react";
 import { CatchError } from "src/utils/index";
-import { ACCESS, ROLE } from "src/server/Host";
 import { setUser } from "src/store/slices/user";
 import { useAppDispatch } from "src/hooks/index";
-import { SignInOneIDConfig } from "src/server/config/Urls";
+import { ACCESS, ROLE } from "src/server/Host";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { SignInOneIDAdminConfig } from "src/server/config/Urls";
 import "src/styles/status.scss";
 
 const Status: React.FC = () => {
@@ -18,7 +18,7 @@ const Status: React.FC = () => {
     const code = searchParam.get("code");
     if (code) {
       try {
-        const { data } = await SignInOneIDConfig(code);
+        const { data } = await SignInOneIDAdminConfig(code);
 
         dispatch(setUser(data));
 
@@ -30,8 +30,10 @@ const Status: React.FC = () => {
 
         if (data?.object?.roles[0] == "ROLE_EDUADMIN") {
           window.location.href = "/college/statistcs";
+        } else if (data?.object?.roles[0] == "ROLE_USER") {
+          window.location.href = "/profile";
         } else {
-          window.location.href = "administration/statistcs";
+          window.location.href = "/administration/statistcs";
         }
       } catch (error) {
         navigate("/");

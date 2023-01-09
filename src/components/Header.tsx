@@ -16,7 +16,7 @@ const Header: React.FC = () => {
       icon: <ExclamationCircleFilled />,
       async onOk() {
         localStorage.clear();
-        window.location.href = "/";
+        window.location.href = "/login";
       },
       okText: "Chiqish",
       cancelText: "Bekor qilish",

@@ -20,6 +20,14 @@ import MuassasaDirection from "./Muassasa/Direction";
 import Boshqarma from "./Boshqarma";
 import BoshqarmaUniversities from "./Boshqarma/BoshqarmaUniversities";
 
+// User pages
+import Home from "./User/Home";
+import UserLogin from "./User/login";
+import Profile from "./User/Profile";
+import Theme from "./User/Profile/Theme";
+import MyInfo from "./User/Profile/MyInfo";
+import Resources from "./User/Profile/Resources";
+
 export {
   Login,
   Status,
@@ -32,4 +40,10 @@ export {
   MuassasaDirection,
   Boshqarma,
   BoshqarmaUniversities,
+  Home,
+  Theme,
+  MyInfo,
+  Profile,
+  Resources,
+  UserLogin,
 };

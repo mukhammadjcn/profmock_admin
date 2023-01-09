@@ -7,7 +7,7 @@ const Login: React.FC = () => {
     <div className="login_section">
       <div className="login_left">
         <div className="login_left_wrap">
-          <Link to={"/"} className="logo">
+          <Link to={"/login"} className="logo">
             <img src={require("src/assets/images/logo.png")} alt="logo" />
             <span>Profmooc.edu.uz</span>
           </Link>
@@ -31,12 +31,12 @@ const Login: React.FC = () => {
           muted
         ></video>
       </div>
-      <div className="login">
-        <div className="login__form">
+      <div className="login-admin">
+        <div className="login-admin__form">
           <h2>Tizimga kirish</h2>
-          <div className="login__oneID">
+          <div className="login-admin__oneID">
             <a href="https://prof-dist.edu.uz/api/auth/oneId">
-              <div className="login__title">ONE ID orqali kirish</div>
+              <div className="login-admin__title">ONE ID orqali kirish</div>
             </a>
             <div className="pulse-css">
               <div className="first-circle"></div>

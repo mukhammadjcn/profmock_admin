@@ -10,12 +10,18 @@ import {
   Sozlama,
   NotFound,
   Muassasa,
+  Boshqarma,
   Statistcs,
   MuassasaTheme,
   MuassasaSubject,
   MuassasaDirection,
-  Boshqarma,
   BoshqarmaUniversities,
+  Home,
+  Profile,
+  MyInfo,
+  Resources,
+  Theme,
+  UserLogin,
 } from "./pages";
 import "src/styles/App.scss";
 import { role, token } from "./server/Host";
@@ -26,9 +32,29 @@ const App: React.FC = () => {
     <Router>
       {/* All pages rendered here */}
       <Routes>
+        {/* User pages */}
+        <Route path="">
+          <Route index element={<Home />} />
+          <Route path="/kirish" element={<UserLogin />} />
+
+          <Route
+            path="profile"
+            element={token ? <Profile /> : <Navigate to="/" />}
+          >
+            <Route index element={<MyInfo />} />
+
+            <Route path="resources">
+              <Route index element={<Resources />} />
+              <Route path=":theme">
+                <Route index element={<Theme />} />
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+
         {/* Login page */}
         <Route
-          index
+          path="login"
           element={
             token && role == "ROLE_EDUADMIN" ? (
               <Navigate to="/college/statistcs" />
@@ -65,7 +91,7 @@ const App: React.FC = () => {
           </Route>
         </Route>
 
-        {/* Musassasa pages */}
+        {/* Administration pages */}
         <Route
           path="administration"
           element={

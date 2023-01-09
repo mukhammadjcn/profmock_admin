@@ -100,6 +100,11 @@ export const LastPage = () => {
   );
 };
 
+// Pretty phone
+export const PrettyPhone = (phone: string) => {
+  return `998${phone.replace("(", "").replace(")", "").replaceAll(" ", "")}`;
+};
+
 // const props: UploadProps = {
 //   name: "file",
 //   multiple: true,

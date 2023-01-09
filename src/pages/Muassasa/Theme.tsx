@@ -77,18 +77,12 @@ const Theme: React.FC = () => {
     return url.length > 2 ? url : "";
   };
   const giveFileType = (name: string) => {
-    const reversedName = name.split(".").reverse().join(".");
-    if (
-      reversedName.split(".")[0] == "ppt" ||
-      reversedName.split(".")[0] == "pptx"
-    ) {
+    const reversedName = name.split(".").reverse();
+    if (reversedName[0] == "ppt" || reversedName[0] == "pptx") {
       return "ppt";
-    } else if (
-      reversedName.split(".")[0] == "doc" ||
-      reversedName.split(".")[0] == "docx"
-    ) {
+    } else if (reversedName[0] == "doc" || reversedName[0] == "docx") {
       return "doc";
-    } else if (reversedName.split(".")[0] == "pdf") {
+    } else if (reversedName[0] == "pdf") {
       return "pdf";
     } else if (
       reversedName[0] == "mp4" ||
@@ -150,6 +144,25 @@ const Theme: React.FC = () => {
 
     if (fileName.length <= 16) return fileName;
     else return fileName.slice(0, 16) + `...`;
+  };
+  const giveColor = (name: string) => {
+    return name == "Fan (amaliyot) haqida"
+      ? "#1890FF"
+      : name == "Videodarslar"
+      ? "#14C130"
+      : name == "Taqdimot (prezentatsiya) materiallari"
+      ? "#FA541C"
+      : name == "Nazariy (maʼruza) qismi uchun matnlar"
+      ? "#C80A0A"
+      : name == "Maʼruzalar boʻyicha test savollari"
+      ? "#FADB14"
+      : name == "Oraliq baholash uchun test savollari"
+      ? "#A0D911"
+      : name == "Amaliy mashgʻulotlar uchun qoʻllanmalar"
+      ? "#13C2C2"
+      : name == "Amaliy mashgʻulotlar uchun nazorat topshiriqlari"
+      ? "#EB2F96"
+      : "#474FBA";
   };
 
   const CreateTheme = async ({ name }: { name: string }) => {
@@ -331,9 +344,14 @@ const Theme: React.FC = () => {
                             >
                               <h3>{prettyName(i?.url)}</h3>
 
+                              {/* File preview or download button */}
                               {i?.type == "Elektron manbalarga havolalar" ? (
                                 <a href={i?.url} target="_blank">
                                   Havolaga o'tish
+                                </a>
+                              ) : i?.type == "Videodarslar" ? (
+                                <a href={i?.url} target="_blank">
+                                  Videoni ko'rish
                                 </a>
                               ) : (
                                 <a href={i?.url} download target="_blank">
@@ -343,12 +361,8 @@ const Theme: React.FC = () => {
                             </div>
                             <div className="flex">
                               <Badge
+                                color={giveColor(i?.type)}
                                 count={`Resurs turi: ${i?.type}`}
-                                color="#1890FF"
-                              />
-                              <Badge
-                                count={"File hajmi: 10 mb"}
-                                color="#722ED1"
                               />
                               <Badge
                                 count={`Yuklab olishlar soni: ${i?.countDownload}`}
