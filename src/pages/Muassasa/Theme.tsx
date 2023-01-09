@@ -395,10 +395,7 @@ const Theme: React.FC = () => {
                         )}
 
                         {resources.length == 0 && role !== "ROLE_EDUADMIN" && (
-                          <Alert
-                            message="Birorta resurs mavjud emas !"
-                            type="error"
-                          />
+                          <Alert message="Resurs mavjud emas !" type="error" />
                         )}
                       </div>
                     </Spin>

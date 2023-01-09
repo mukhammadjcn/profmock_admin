@@ -2,20 +2,12 @@ import React, { useEffect, useState } from "react";
 import Footer from "src/components/home/Footer";
 import Header from "src/components/home/Header";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import {
-  UserSVG,
-  HomeSVG,
-  RightSVG,
-  ResurceSVG,
-  BackSVG,
-} from "src/components/svg";
+import { UserSVG, HomeSVG, RightSVG, ResurceSVG } from "src/components/svg";
 import { setUser } from "src/store/slices/application";
 import { useAppDispatch, useAppSelector } from "src/hooks/index";
 import { CatchError } from "src/utils/index";
 import { GetUserConfig } from "src/server/config/Urls";
 import { IUser } from "src/types";
-import { Modal } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import "src/styles/user/Profile.scss";
 
 const Profile: React.FC = () => {
@@ -44,19 +36,6 @@ const Profile: React.FC = () => {
     } catch (error) {
       CatchError(error);
     }
-  };
-
-  const logout = () => {
-    Modal.confirm({
-      title: "Haqiqatdan ham tizimdan chiqmoqchimisiz ?",
-      icon: <ExclamationCircleFilled />,
-      async onOk() {
-        localStorage.clear();
-        window.location.href = "/";
-      },
-      okText: "Chiqish",
-      cancelText: "Bekor qilish",
-    });
   };
 
   useEffect(() => {
@@ -115,13 +94,6 @@ const Profile: React.FC = () => {
               >
                 <ResurceSVG />
                 <span>Resurslar</span>
-              </button>
-              <button
-                onClick={logout}
-                className="profile__tab profile__tab-logout flex"
-              >
-                <BackSVG />
-                <span>Tizimdan chiqish</span>
               </button>
             </div>
             <div className="profile__links">

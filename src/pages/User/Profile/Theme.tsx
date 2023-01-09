@@ -170,7 +170,7 @@ const Theme: React.FC = () => {
       </div>
 
       {themes.length == 0 ? (
-        <NoData title="Birorta mavzu mavjud emas" />
+        <NoData title="Mavzu mavjud emas" />
       ) : (
         <>
           <div className="theme__body">
@@ -236,10 +236,7 @@ const Theme: React.FC = () => {
                         ))}
 
                         {resources.length == 0 && role !== "ROLE_EDUADMIN" && (
-                          <Alert
-                            message="Birorta resurs mavjud emas !"
-                            type="error"
-                          />
+                          <Alert message="Resurs mavjud emas !" type="error" />
                         )}
                       </div>
                     </Spin>

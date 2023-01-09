@@ -111,7 +111,7 @@ const Resources: React.FC = () => {
           </Link>
         ))
       ) : (
-        <NoData title="Birorta fan mavjud emas )" />
+        <NoData title="Fan mavjud emas )" />
       )}
     </div>
   );
