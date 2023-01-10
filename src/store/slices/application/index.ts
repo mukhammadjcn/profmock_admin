@@ -4,7 +4,7 @@ import { IApplication } from "src/types";
 const initialState: IApplication = {
   user: {
     id: 0,
-    fullName: "?",
+    fullName: "",
     phoneNumber: "",
     pinfl: "",
     gender: "",

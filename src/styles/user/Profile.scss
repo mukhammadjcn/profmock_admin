@@ -44,6 +44,7 @@
     img {
       width: 64px;
       height: 64px;
+      flex-shrink: 0;
       border-radius: 50%;
       object-fit: contain;
     }
@@ -354,8 +355,6 @@
     display: flex;
     align-items: flex-start;
     section {
-      padding: 24px 0 0;
-      border-top: 1px solid #f0f0f0;
       .title {
         font-weight: 600;
         font-size: 24px;
@@ -414,6 +413,9 @@
     flex-grow: 1;
     background-color: white;
     .malumot {
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #f0f0f0;
       .id {
         padding-bottom: 24px;
         border-bottom: 1px solid #f0f0f0;
@@ -462,6 +464,10 @@
               background: #f3f3f6;
             }
           }
+        }
+        & > .ant-skeleton .ant-skeleton-image {
+          width: 180px;
+          height: 200px;
         }
       }
     }
@@ -625,6 +631,9 @@
                 font-size: 14px;
               }
             }
+          }
+          & > .ant-skeleton .ant-skeleton-image {
+            width: 100%;
           }
         }
       }

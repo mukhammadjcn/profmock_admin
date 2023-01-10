@@ -1,10 +1,38 @@
 import React from "react";
 import { useAppSelector } from "src/hooks";
-import { Image, Statistic } from "antd";
+import { Image, Skeleton } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import "src/styles/user/Profile.scss";
 
 const MyApplication: React.FC = () => {
   const userInfo = useAppSelector((state) => state.Application.user);
+
+  if (!userInfo.fullName) {
+    return (
+      <div className="my-application">
+        <div className="my-application__body">
+          <div className="my-application__main">
+            {/* Malumot */}
+            <div className="malumot">
+              <div className="info">
+                <Skeleton.Node active>
+                  <UserOutlined style={{ fontSize: 56, color: "#bfbfbf" }} />
+                </Skeleton.Node>
+                <div className="info__section">
+                  <Skeleton active paragraph={{ rows: 5 }} />
+                </div>
+              </div>
+            </div>
+
+            {/* ARIZA */}
+            <section className="ariza">
+              <Skeleton active paragraph={{ rows: 4 }} />
+            </section>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="my-application">
@@ -15,23 +43,14 @@ const MyApplication: React.FC = () => {
             <div className="info">
               <Image
                 width={180}
-                src={
-                  userInfo.photo
-                    ? `data:image/jpeg;base64,${userInfo.photo}`
-                    : require("src/assets/images/user.png")
-                }
+                src={`data:image/jpeg;base64,${userInfo.photo}`}
               />
               <div className="info__section">
                 <h2 className="title">{userInfo.fullName}</h2>
                 <div>
                   <div className="flex">
                     <h4>Jinsi va tug’ilgan yili:</h4>
-                    <h5>
-                      {userInfo.gender == "1" ? "(Erkak) " : "(Ayol) "}
-                      {/* {new Date(
-                        userInfo.student?.birth_date
-                      ).toLocaleDateString()} */}
-                    </h5>
+                    <h5>{userInfo.gender == "1" ? "(Erkak) " : "(Ayol) "}</h5>
                   </div>
                   <div className="flex">
                     <h4>Pasport seriyasi va raqami</h4>

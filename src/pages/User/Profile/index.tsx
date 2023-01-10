@@ -9,6 +9,9 @@ import { CatchError } from "src/utils/index";
 import { GetUserConfig } from "src/server/config/Urls";
 import { IUser } from "src/types";
 import "src/styles/user/Profile.scss";
+import { Skeleton } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import SkeletonInput from "antd/es/skeleton/Input";
 
 const Profile: React.FC = () => {
   const param = useLocation();
@@ -60,16 +63,34 @@ const Profile: React.FC = () => {
         </div>
         <div className="container">
           <div className="profile__sidebar">
-            <div className="profile__header flex">
-              <img
-                src={
-                  userData?.photo
-                    ? `data:image/jpeg;base64,${userData?.photo}`
-                    : require("src/assets/images/user.png")
-                }
-                alt=""
-              />
-              <h4>{user.fullName.split(" ").splice(0, 2).join(" ")}</h4>
+            <div className="flex profile__header ">
+              {userData?.photo ? (
+                <img
+                  alt="user image"
+                  src={`data:image/jpeg;base64,${userData?.photo}`}
+                />
+              ) : (
+                <Skeleton.Node
+                  active
+                  style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: "50%",
+                  }}
+                >
+                  <UserOutlined style={{ fontSize: 24, color: "#bfbfbf" }} />
+                </Skeleton.Node>
+              )}
+              <h4>
+                {user.fullName ? (
+                  user.fullName.split(" ").splice(0, 2).join(" ")
+                ) : (
+                  <div style={{ height: 64 }}>
+                    <SkeletonInput size="small" />
+                    <SkeletonInput block size="small" />
+                  </div>
+                )}
+              </h4>
             </div>
             <div className="profile__menu">
               <h4>Mening arizalarim</h4>
