@@ -64,7 +64,7 @@ const Home: React.FC = () => {
         <div className="container">
           {/* Home-user advices */}
           <section className="home-user__advices">
-            <h4 className="label">PROFMOOC.UZ AFZALLIKLARI</h4>
+            <h4 className="label">Prof-dist.UZ AFZALLIKLARI</h4>
             <h2 className="title">Tizmning afzalliklari va qulayliklari</h2>
             <div className="row flex">
               <div className="col">
@@ -78,36 +78,37 @@ const Home: React.FC = () => {
               </div>
               <div className="col">
                 <Advice2 />
-                <h3>Axborot-resurslari komponenti</h3>
+                <h3>Vaqtingiz tejaladi</h3>
                 <p>
-                  Oʻquv qoʻllanma (darslik)lar, oʻqitish materiallari
-                  toʻplamlari, videodarslar, prezentatsiya maʼlumotlari va
-                  boshqa resurslardan foydalanishni taʼminlaydi.
+                  Vaqtingizni tejang! O’quv markazlariga borish va qaytish
+                  vaqtida transport kutish uchun ketadigan vaqtingizni
+                  tejashingiz mumkin. Onlayn ta’limda siz istagan yeringizda
+                  ma’lumot olasiz.
                 </p>
               </div>
               <div className="col">
                 <Advice3 />
-                <h3>Axborot-resurslari komponenti</h3>
+                <h3>Mablag’ingiz tejaladi</h3>
                 <p>
-                  Oʻquv qoʻllanma (darslik)lar, oʻqitish materiallari
-                  toʻplamlari, videodarslar, prezentatsiya maʼlumotlari va
-                  boshqa resurslardan foydalanishni taʼminlaydi.
+                  Har qanday dastur uchun masofaviy ta’lim darajasi (Internetda
+                  yoki boshqa usulda). Iqtisodiy jihatdan maqbul variantlarni
+                  qidirayotgan o’quvchilar uchun onlayn ta’lim-eng to’g’ri yo’l.
                 </p>
               </div>
               <div className="col">
                 <Advice4 />
-                <h3>Axborot-resurslari komponenti</h3>
+                <h3>Joylashuvga bog'liq emas</h3>
                 <p>
-                  Oʻquv qoʻllanma (darslik)lar, oʻqitish materiallari
-                  toʻplamlari, videodarslar, prezentatsiya maʼlumotlari va
-                  boshqa resurslardan foydalanishni taʼminlaydi.
+                  Onlayn o'qitishning eng muhim ustunligi dunyoning istalgan
+                  nuqtasidan bilim olishni osonlashtiradi. Masalan, Buxorolik
+                  talaba Toshkent kollejlar va texnikumlarda o'qishi mumkin.
                 </p>
               </div>
             </div>
           </section>
 
           {/* Home-user video */}
-          <section className="home-user__video flex">
+          {/* <section className="home-user__video flex">
             <div className="home-user__video-left">
               <h4 className="label">YO’RIQNOMA</h4>
               <h2 className="title">
@@ -172,7 +173,7 @@ const Home: React.FC = () => {
                 </a>
               )}
             </div>
-          </section>
+          </section> */}
 
           {/* Home-user useful links */}
           <section className="home-user__links">
@@ -180,28 +181,36 @@ const Home: React.FC = () => {
             <div className="row flex">
               <div className="col flex">
                 <img src={require("src/assets/images/logo.png")} alt="" />
-                <h3>
-                  O‘zbekiston Respublikasi Oliy va o‘rta maxsus ta'lim vazirligi
-                </h3>
+                <a href="https://edu.uz/uz" target="_blank">
+                  <h3>
+                    O‘zbekiston Respublikasi Oliy va o‘rta maxsus ta'lim
+                    vazirligi
+                  </h3>
+                </a>
               </div>
               <div className="col flex">
                 <img src={require("src/assets/images/akt.png")} alt="" />
-                <h3>
-                  Axborot texnologiyalari va kommunikatsiyalarini rivojlantirish
-                  vazirligi
-                </h3>
+                <a href="https://www.mitc.uz/uz" target="_blank">
+                  <h3>
+                    Axborot texnologiyalari va kommunikatsiyalarini
+                    rivojlantirish vazirligi
+                  </h3>
+                </a>
               </div>
               <div className="col flex">
                 <img src={require("src/assets/images/csc.png")} alt="" />
-                <h3>“Kiberxavfsizlik markazi” davlat unitar korxonasi.</h3>
+                <a href="https://csec.uz/uz/" target="_blank">
+                  <h3>“Kiberxavfsizlik markazi” davlat unitar korxonasi.</h3>
+                </a>
               </div>
             </div>
           </section>
 
           {/* Home-user talablar */}
           <section className="home-user__requests">
-            <h2 className="title">Foydali havolalar</h2>
-            <p>Talablar ro‘yxati</p>
+            <h2 className="title">Dasturiy platformaga qoʻyilgan talablar</h2>
+            {/* <p>Talablar ro‘yxati</p> */}
+            <br />
             <div className="row flex">
               <div className="col">
                 <h4>Hududlar komponenti</h4>
@@ -258,7 +267,8 @@ const Home: React.FC = () => {
         <section className="home-user__stat-container">
           <div className="container">
             <h2>
-              Profmooc tizimi 700 ga yaqin kollejlar va texnikumlarda ishlaydi{" "}
+              prof-dist.edu.uz tizimidan 700 ga yaqin kollejlar va texnikumlar
+              foydalanadi{" "}
             </h2>
             <div className="home-user__stat">
               <div>

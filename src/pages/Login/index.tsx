@@ -9,7 +9,7 @@ const Login: React.FC = () => {
         <div className="login_left_wrap">
           <Link to={"/login"} className="logo">
             <img src={require("src/assets/images/logo.png")} alt="logo" />
-            <span>Profmooc.edu.uz</span>
+            <span>prof-dist.edu.uz</span>
           </Link>
 
           <div className="login_left_content">

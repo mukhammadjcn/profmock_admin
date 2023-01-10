@@ -40,7 +40,7 @@ const Header: React.FC = () => {
         {/* Logo side */}
         <Link to={"/"} className="logo-user">
           <img src={require("src/assets/images/logo.png")} alt="Company logo" />
-          <span>Profmooc.edu.uz</span>
+          <span>prof-dist.edu.uz</span>
         </Link>
 
         {/* Navbar */}

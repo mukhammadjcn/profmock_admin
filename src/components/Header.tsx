@@ -28,7 +28,7 @@ const Header: React.FC = () => {
       <div className="p8-32 header">
         <Link to={"/administration/statistcs"} className="logo">
           <img src={require("src/assets/images/logo.png")} alt="" />
-          <span>Profmoc.edu.uz</span>
+          <span>prof-dist.edu.uz</span>
         </Link>
 
         <ul className="flex">
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
     <div className="p8-32 header">
       <Link to={"/college/statistcs"} className="logo">
         <img src={require("src/assets/images/logo.png")} alt="" />
-        <span>Profmoc.edu.uz</span>
+        <span>prof-dist.edu.uz</span>
       </Link>
 
       <ul className="flex">

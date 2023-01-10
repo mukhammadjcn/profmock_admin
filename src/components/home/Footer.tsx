@@ -10,7 +10,7 @@ function Footer() {
           <div className="footer-user__info">
             <Link to={"/"} className="logo">
               <img src={require("../../assets/images/logo.png")} alt="" />
-              <span>Profmooc.edu.uz</span>
+              <span>prof-dist.edu.uz</span>
             </Link>
             <p className="info">
               Portalda eʼlon qilingan materiallardan nusxa koʻchirish, tarqatish
@@ -65,7 +65,7 @@ function Footer() {
             </a>
           </div>
         </div>
-        <p>2022 © Profmooc.edu.uz</p>
+        <p>2022 © prof-dist.edu.uz</p>
       </div>
     </div>
   );
