@@ -35,6 +35,7 @@ import {
   ExclamationCircleFilled,
 } from "@ant-design/icons";
 import { role } from "src/server/Host";
+import { resourceSelect } from "src/assets/data";
 
 const Theme: React.FC = () => {
   const [form] = Form.useForm();
@@ -478,44 +479,7 @@ const Theme: React.FC = () => {
             <Select
               placeholder="Tanlang "
               onChange={(type: string) => setResourceType(type)}
-              options={[
-                {
-                  value: "Fan (amaliyot) haqida",
-                  label: "Fan (amaliyot) haqida",
-                },
-                {
-                  value: "Videodarslar",
-                  label: "Videodarslar",
-                },
-                {
-                  value: "Taqdimot (prezentatsiya) materiallari",
-                  label: "Taqdimot (prezentatsiya) materiallari",
-                },
-                {
-                  value: "Nazariy (maʼruza) qismi uchun matnlar",
-                  label: "Nazariy (maʼruza) qismi uchun matnlar",
-                },
-                {
-                  value: "Maʼruzalar boʻyicha test savollari",
-                  label: "Maʼruzalar boʻyicha test savollari",
-                },
-                {
-                  value: "Oraliq baholash uchun test savollari",
-                  label: "Oraliq baholash uchun test savollari",
-                },
-                {
-                  value: "Amaliy mashgʻulotlar uchun qoʻllanmalar",
-                  label: "Amaliy mashgʻulotlar uchun qoʻllanmalar",
-                },
-                {
-                  value: "Amaliy mashgʻulotlar uchun nazorat topshiriqlari",
-                  label: "Amaliy mashgʻulotlar uchun nazorat topshiriqlari",
-                },
-                {
-                  value: "Elektron manbalarga havolalar",
-                  label: "Elektron manbalarga havolalar",
-                },
-              ]}
+              options={resourceSelect}
             />
           </Form.Item>
 
@@ -550,6 +514,7 @@ const Theme: React.FC = () => {
                   maxCount={1}
                   multiple={false}
                   beforeUpload={() => false}
+                  accept={resourceType == "Videodarslar" ? "video/*" : ""}
                 >
                   <p className="ant-upload-drag-icon">
                     <InboxOutlined />

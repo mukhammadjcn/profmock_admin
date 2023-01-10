@@ -1,11 +1,14 @@
 .login_section {
   display: flex;
+  font-family: "Source Sans Pro", sans-serif;
 }
 .login_left {
   width: calc(100% - 480px);
   height: 100vh;
   position: relative;
   background: black;
+  font-family: "Source Sans Pro", sans-serif;
+
   .login_left_wrap {
     z-index: 2;
     position: relative;
@@ -63,6 +66,8 @@
 .login_right {
   width: 480px;
   //   padding: 50px;
+  font-family: "Source Sans Pro", sans-serif;
+
   .login_right_title {
     font-weight: 500;
     font-size: 38px;
@@ -95,6 +100,7 @@
   height: 100vh;
   overflow: hidden;
   width: 480px;
+  font-family: "Source Sans Pro", sans-serif;
 
   &__form {
     display: flex;
@@ -221,6 +227,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  font-family: "Source Sans Pro", sans-serif;
+
   img {
     width: 40px;
     height: 40px;

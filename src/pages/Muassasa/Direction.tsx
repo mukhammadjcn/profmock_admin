@@ -14,10 +14,11 @@ import {
 import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, Table, Form, Select, SelectProps, message } from "antd";
 import { role } from "src/server/Host";
+import { resourceType } from "src/assets/data";
 
 const Direaction: React.FC = () => {
   const [form] = Form.useForm();
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -209,7 +210,11 @@ const Direaction: React.FC = () => {
   const GetStats = async () => {
     try {
       const { data } = await GetUniverStatConfig();
-      setStats(data);
+      let array = resourceType;
+      array.forEach((item: any) => {
+        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
+      });
+      setStats(array);
     } catch (error) {
       CatchError(error);
     }
