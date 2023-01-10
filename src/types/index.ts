@@ -43,6 +43,8 @@ export interface IUser {
   permanentAddress: string;
   photo: string;
   direction: string;
+  academicGroupName: string;
+  enrollment: string;
 }
 
 export interface ISubject {

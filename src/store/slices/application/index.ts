@@ -15,6 +15,8 @@ const initialState: IApplication = {
     permanentAddress: "",
     photo: "",
     direction: "",
+    academicGroupName: "",
+    enrollment: "",
   },
   subjects: [],
 };

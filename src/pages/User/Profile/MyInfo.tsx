@@ -26,7 +26,7 @@ const MyApplication: React.FC = () => {
 
             {/* ARIZA */}
             <section className="ariza">
-              <Skeleton active paragraph={{ rows: 4 }} />
+              <Skeleton active paragraph={{ rows: 6 }} />
             </section>
           </div>
         </div>
@@ -85,18 +85,14 @@ const MyApplication: React.FC = () => {
                 <h4>Yo‘nalish nomi:</h4>
                 <span>{userInfo.direction}</span>
               </div>
-              {/* <div className="flex">
-                <h4>Ta’lim tili:</h4>
-                <span>{userInfo.eduAddress}</span>
+              <div className="flex">
+                <h4>Guruh nomi:</h4>
+                <span>{userInfo.academicGroupName}</span>
               </div>
               <div className="flex">
-                <h4>Ta'lim turi:</h4>
-                <span>{userInfo.eduAddress}</span>
+                <h4>O'qishga qabul qilingan yili</h4>
+                <span>{userInfo.enrollment}</span>
               </div>
-              <div className="flex">
-                <h4>O'qish kursi</h4>
-                <span>{userInfo.eduAddress}</span>
-              </div> */}
             </div>
           </section>
         </div>
