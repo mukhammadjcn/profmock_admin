@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Dropdown } from "antd";
-import { token } from "src/server/Host";
+import { isUser, token } from "src/server/Host";
 import { BottomArrowSVG } from "src/components/svg";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -52,7 +52,7 @@ const Header: React.FC = () => {
         </nav>
 
         {/* One if button */}
-        {token ? (
+        {isUser() ? (
           <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
             <div className="kirgan">
               <div className="kirgan__img">AA</div>

@@ -12,7 +12,7 @@ import { MaskedInput } from "antd-mask-input";
 import { CatchError, PrettyPhone } from "src/utils/index";
 import { Link } from "react-router-dom";
 import { RegisterCheckConfig, RegisterConfig } from "src/server/config/Urls";
-import { ACCESS } from "src/server/Host";
+import { ACCESS, setLocal } from "src/server/Host";
 
 interface IRegisterUser {
   pinfl: string;
@@ -56,7 +56,7 @@ function SignupForm() {
         ...userData,
       });
       message.success(data?.message);
-      localStorage.setItem(ACCESS, data?.object?.jwtToken);
+      setLocal(ACCESS, data?.object?.jwtToken);
       window.location.href = "/profile";
     } catch (error) {
       CatchError(error);

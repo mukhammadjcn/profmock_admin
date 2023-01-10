@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { CatchError } from "src/utils/index";
 import { setUser } from "src/store/slices/user";
 import { useAppDispatch } from "src/hooks/index";
-import { ACCESS, ROLE } from "src/server/Host";
+import { ACCESS, ROLE, setLocal } from "src/server/Host";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { SignInOneIDAdminConfig } from "src/server/config/Urls";
 import "src/styles/status.scss";
@@ -23,10 +23,10 @@ const Status: React.FC = () => {
         dispatch(setUser(data));
 
         // SET ROLE
-        localStorage.setItem(ROLE, data?.object?.roles[0]);
+        setLocal(ROLE, data?.object?.roles[0]);
 
         // SET TOKEN
-        localStorage.setItem(ACCESS, data?.object?.jwtToken);
+        setLocal(ACCESS, data?.object?.jwtToken);
 
         if (data?.object?.roles[0] == "ROLE_EDUADMIN") {
           window.location.href = "/college/statistcs";

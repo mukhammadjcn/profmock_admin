@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { ACCESS, REFRESH, role, ROLE } from "../server/Host";
+import { ACCESS, REFRESH, role, ROLE, setLocal } from "../server/Host";
 
 export const CatchError = async (error: any) => {
   if (error.response) {
@@ -94,10 +94,7 @@ export const GiveType = (key: number) => {
 };
 
 export const LastPage = () => {
-  localStorage.setItem(
-    "lastpage",
-    window.location.pathname + window.location.search
-  );
+  setLocal("lastpage", window.location.pathname + window.location.search);
 };
 
 // Pretty phone

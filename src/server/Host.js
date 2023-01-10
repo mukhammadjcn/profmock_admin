@@ -18,6 +18,10 @@ export const getLocal = (name) => localStorage.getItem(name);
 export const removeLocal = (name) => localStorage.removeItem(name);
 export const setLocal = (name, value) => localStorage.setItem(name, value);
 
+export const isUser = () => token && role == "ROLE_USER";
+export const isAdmin = () => token && role == "ROLE_EDUADMIN";
+export const isManagment = () => token && role == "ROLE_MANAGEMENTADMIN";
+
 // Requests header
 export let headers = {
   "X-Requested-With": "XMLHttpRequest",

@@ -3,7 +3,7 @@ import { Button, Form, Input, message } from "antd";
 import { MaskedInput } from "antd-mask-input";
 import { LoginConfig } from "src/server/config/Urls";
 import { CatchError, PrettyPhone } from "src/utils/index";
-import { ACCESS } from "src/server/Host";
+import { ACCESS, ROLE, setLocal } from "src/server/Host";
 
 function SigninForm({ setTab, setSection }: any) {
   const [form] = Form.useForm();
@@ -15,7 +15,8 @@ function SigninForm({ setTab, setSection }: any) {
         phoneNumber: PrettyPhone(phoneNumber),
       });
       message.success(data?.message);
-      localStorage.setItem(ACCESS, data?.object?.jwtToken);
+      setLocal(ACCESS, data?.object?.jwtToken);
+      setLocal(ROLE, "ROLE_USER");
       window.location.href = "/profile";
     } catch (error) {
       CatchError(error);

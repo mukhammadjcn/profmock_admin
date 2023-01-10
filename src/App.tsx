@@ -24,7 +24,7 @@ import {
   UserLogin,
 } from "./pages";
 import "src/styles/App.scss";
-import { role, token } from "./server/Host";
+import { isAdmin, isManagment, isUser } from "./server/Host";
 import React from "react";
 
 const App: React.FC = () => {
@@ -39,7 +39,7 @@ const App: React.FC = () => {
 
           <Route
             path="profile"
-            element={token ? <Profile /> : <Navigate to="/" />}
+            element={isUser() ? <Profile /> : <Navigate to="/" />}
           >
             <Route index element={<MyInfo />} />
 
@@ -56,9 +56,9 @@ const App: React.FC = () => {
         <Route
           path="login"
           element={
-            token && role == "ROLE_EDUADMIN" ? (
+            isAdmin() ? (
               <Navigate to="/college/statistcs" />
-            ) : token && role == "ROLE_MANAGEMENTADMIN" ? (
+            ) : isManagment() ? (
               <Navigate to="/administration/statistcs" />
             ) : (
               <Login />
@@ -69,13 +69,7 @@ const App: React.FC = () => {
         {/* Musassasa pages */}
         <Route
           path="college"
-          element={
-            token && role == "ROLE_EDUADMIN" ? (
-              <Muassasa />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={isAdmin() ? <Muassasa /> : <Navigate to="/login" />}
         >
           <Route index element={<Navigate to="statistcs" />} />
           <Route path="sozlama" element={<Sozlama />} />
@@ -94,13 +88,7 @@ const App: React.FC = () => {
         {/* Administration pages */}
         <Route
           path="administration"
-          element={
-            token && role == "ROLE_MANAGEMENTADMIN" ? (
-              <Boshqarma />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={isManagment() ? <Boshqarma /> : <Navigate to="/login" />}
         >
           <Route index element={<Navigate to="statistcs" />} />
           <Route path="sozlama" element={<Sozlama />} />

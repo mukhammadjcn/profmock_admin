@@ -3,7 +3,7 @@ import { Button } from "antd";
 import Header from "src/components/home/Header";
 import Footer from "src/components/home/Footer";
 import { Advice1, Advice2, Advice3, Advice4 } from "src/components/svg";
-import { token } from "src/server/Host";
+import { isUser } from "src/server/Host";
 import { Link } from "react-router-dom";
 import "src/styles/user/main.scss";
 import "src/styles/user/home.scss";
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
               oʻqitish tizimi.
             </p>
             <div className="home-user__login">
-              {token ? (
+              {isUser() ? (
                 <Button type="primary" size="large">
                   <Link to={"/profile"} style={{ color: "white" }}>
                     Kabinetga kirish
@@ -118,7 +118,7 @@ const Home: React.FC = () => {
                 Onlayn ta’limda siz dam olish kunlarida, ishdan qaytganingizda
                 hatto yarim kechada o’qishingiz mumkin.
               </p>
-              {token ? (
+              {isUser ? (
                 <Button type="primary" size="large">
                   <Link to={"/profile"} style={{ color: "white" }}>
                     Kabinetga kirish
