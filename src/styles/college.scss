@@ -139,8 +139,11 @@
       background: white;
       border-radius: 8px;
       margin-bottom: 24px;
-      .ant-tabs-nav {
-        margin-bottom: 0;
+      .ant-tabs {
+        flex-grow: 1;
+        &-nav {
+          margin-bottom: 0;
+        }
       }
     }
   }

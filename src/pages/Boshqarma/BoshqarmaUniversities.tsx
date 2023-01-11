@@ -1,13 +1,17 @@
-import { Table } from "antd";
+import { Input, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IUniverList } from "src/types/index";
 import React, { useEffect, useState } from "react";
 import { CatchError, LastPage } from "src/utils/index";
 import { Link, useSearchParams } from "react-router-dom";
-import { GetMyCollegesConfig } from "src/server/config/Urls";
+import {
+  GetMyCollegesConfig,
+  GetManagmentStatConfig,
+} from "src/server/config/Urls";
+import { resourceType } from "src/assets/data";
 
 const BoshqarmaUniversities: React.FC = () => {
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [directions, setDirections] = useState<IUniverList[]>([]);
@@ -15,7 +19,9 @@ const BoshqarmaUniversities: React.FC = () => {
   // For pagination
   const [total, setTotal] = useState(0);
   const currentPage = searchParams.get("page");
+  const currentSearch = searchParams.get("search");
   const [current, setCurrent] = useState(currentPage ? currentPage : 1);
+  const [search, setSearh] = useState(currentSearch ? currentSearch : "");
 
   const columns: ColumnsType<IUniverList> = [
     {
@@ -50,6 +56,17 @@ const BoshqarmaUniversities: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
+    GetMyDirections();
+    window.scrollTo(0, 0);
+  };
+  const setSearch = (val: any) => {
+    // set page 1
+    setCurrent(1);
+    handleMakeParams("page", 1);
+
+    // set search
+    setSearh(val);
+    handleMakeParams("search", val);
     GetMyDirections();
     window.scrollTo(0, 0);
   };
@@ -88,8 +105,21 @@ const BoshqarmaUniversities: React.FC = () => {
     }
     setLoading(false);
   };
+  const GetStats = async () => {
+    try {
+      const { data } = await GetManagmentStatConfig();
+      let array = resourceType;
+      array.forEach((item: any) => {
+        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
+      });
+      setStats(array);
+    } catch (error) {
+      CatchError(error);
+    }
+  };
 
   useEffect(() => {
+    GetStats();
     GetMyDirections();
   }, []);
 
@@ -111,6 +141,15 @@ const BoshqarmaUniversities: React.FC = () => {
       </div>
 
       <div className="college__directions">
+        <div className="flex" style={{ justifyContent: "flex-end" }}>
+          <Input.Search
+            allowClear
+            onSearch={setSearch}
+            defaultValue={search}
+            style={{ width: 400 }}
+            placeholder="Talim muassasaning nomini kiriting !"
+          />
+        </div>
         <Table
           columns={columns}
           dataSource={directions}

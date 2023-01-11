@@ -9,114 +9,88 @@ import {
   GaugeConfig,
 } from "@ant-design/plots";
 import "src/styles/statistcs.scss";
+import { isAdmin, isManagment, role } from "src/server/Host";
+import { CatchError } from "src/utils/index";
+import { resourceType } from "src/assets/data";
+import {
+  GetDownloadResourceByDateConfig,
+  GetDownloadResourceByDateRegionConfig,
+  GetManagmentStatConfig,
+  GetMyCollegesListConfig,
+  GetPerfectDownloadConfig,
+  GetPerfectDownloadRegionConfig,
+  GetUniverStatConfig,
+} from "src/server/config/Urls";
+import { useSearchParams } from "react-router-dom";
+import { Select, Spin } from "antd";
 
 const Statistcs: React.FC = () => {
-  const [dataArea, setDataArea] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const dataPie = [
-    {
-      type: "salom1",
-      value: 27,
-    },
-    {
-      type: "salom2",
-      value: 25,
-    },
-    {
-      type: "salom3",
-      value: 18,
-    },
-    {
-      type: "salom4",
-      value: 15,
-    },
-    {
-      type: "salom5",
-      value: 10,
-    },
-    {
-      type: "salom6",
-      value: 5,
-    },
-  ];
+  // For edu id
+  const currentCollege = searchParams.get("eduId");
+  const [collegeId, setCollegeId] = useState(
+    currentCollege ? currentCollege : 0
+  );
+
+  const [all, setAll] = useState(0);
+  const [percent, setPercent] = useState(0);
+  const [barChat, setBarChart] = useState<any>([]);
+  const [lineChat, setLineChart] = useState<any>([]);
+  const [list, setList] = useState<{ value: string; label: string }[]>([]);
+
+  // Config for charts-------------------
+
   const configPie: PieConfig = {
-    angleField: "value",
+    angleField: "count",
     colorField: "type",
     radius: 0.8,
+    data: barChat,
     legend: {
-      layout: "horizontal",
-      position: "bottom",
+      layout: "vertical",
+      position: "right",
+      maxItemWidth: 200,
+      offsetX: -60,
     },
-    data: dataPie,
   };
 
-  const dataPlot = [
-    {
-      type: "salom1",
-      "Sotuvlar-soni": 38,
-    },
-    {
-      type: "salom2",
-      "Sotuvlar-soni": 52,
-    },
-    {
-      type: "salom3",
-      "Sotuvlar-soni": 61,
-    },
-    {
-      type: "salom4",
-      "Sotuvlar-soni": 145,
-    },
-    {
-      type: "salom5",
-      "Sotuvlar-soni": 48,
-    },
-    {
-      type: "salom6",
-      "Sotuvlar-soni": 38,
-    },
-    {
-      type: "salom7",
-      "Sotuvlar-soni": 38,
-    },
-    {
-      type: "salom8",
-      "Sotuvlar-soni": 38,
-    },
-  ];
   const configPlot = {
     xField: "type",
-    yField: "Sotuvlar-soni",
+    yField: "count",
     xAxis: {
       label: {
         autoHide: true,
         autoRotate: false,
+        style: {
+          fill: "white",
+          opacity: 0.6,
+          fontSize: 1,
+        },
+      },
+      legend: false,
+    },
+    data: barChat,
+    meta: {
+      count: {
+        alias: "Yuklab olishlar soni",
       },
     },
   };
 
   const configArea = {
-    xField: "Date",
-    yField: "scales",
+    xField: "sana",
+    yField: "count",
     xAxis: {
       range: [0, 1],
-      tickCount: 5,
+      tickCount: 10,
     },
     areaStyle: () => {
       return {
         fill: "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
       };
     },
-  };
-  const asyncFetch = () => {
-    fetch(
-      "https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json"
-    )
-      .then((response) => response.json())
-      .then((json) => setDataArea(json))
-      .catch((error) => {
-        console.log("fetch data failed", error);
-      });
+    data: lineChat,
   };
 
   const data = [
@@ -133,7 +107,7 @@ const Statistcs: React.FC = () => {
   };
 
   const configGuage: GaugeConfig = {
-    percent: 0.75,
+    percent: percent,
     range: {
       color: "#30BF78",
     },
@@ -156,53 +130,170 @@ const Statistcs: React.FC = () => {
         },
       },
       subTickLine: {
-        count: 3,
+        count: 2,
       },
     },
   };
 
+  // functions for Slect university
+  const handleMakeParams = (key: any, value: any) => {
+    if (value) {
+      if (searchParams.has(key)) searchParams.set(key, value);
+      else searchParams.append(key, value);
+    } else searchParams.delete(key);
+    setSearchParams(searchParams);
+  };
+  const setCollege = (val: any) => {
+    setCollegeId(val);
+    handleMakeParams("eduId", val);
+    getStatsManagment();
+    window.scrollTo(0, 0);
+  };
+  const urlMaker = () => {
+    let url = "?";
+    for (let key of searchParams.keys()) {
+      let value = searchParams.get(key);
+      url = url + `${url.length < 2 ? "" : "&"}${key}=${value}`;
+    }
+    return url.length > 2 ? url : "";
+  };
+
+  const getStatsEdu = async () => {
+    setLoading(true);
+
+    try {
+      const { data } = await GetUniverStatConfig();
+      let array = resourceType;
+      array.forEach((item: any) => {
+        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
+      });
+      setAll(
+        data.reduce((all: any, current: any) => (all += current?.count), 0)
+      );
+      setBarChart(array);
+
+      const dateStat = await GetDownloadResourceByDateConfig();
+      setLineChart(dateStat.data);
+
+      const percentStat = await GetPerfectDownloadConfig();
+      setPercent((Number(percentStat.data?.jami) || 0) / 100);
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+  const getStatsManagment = async () => {
+    setLoading(true);
+    try {
+      // Universities list
+      const list = await GetMyCollegesListConfig();
+      setList(
+        list.data.content.reduce(
+          (all: any, current: any) => [
+            ...all,
+            { value: current?.id, label: current?.eduName },
+          ],
+          []
+        )
+      );
+
+      // Percent stats
+      const percentStat = await GetPerfectDownloadRegionConfig(urlMaker());
+      setPercent((Number(percentStat.data?.jami) || 0) / 100);
+
+      // Stats in file types
+      const { data } = await GetManagmentStatConfig(urlMaker());
+      let array = resourceType;
+      array.forEach((item: any) => {
+        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
+      });
+      setAll(
+        data.reduce((all: any, current: any) => (all += current?.count), 0)
+      );
+      setBarChart(array);
+
+      console.log(array);
+
+      // Region stats
+      const dateStat = await GetDownloadResourceByDateRegionConfig(urlMaker());
+      setLineChart(dateStat.data);
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    asyncFetch();
+    isAdmin() ? getStatsEdu() : getStatsManagment();
   }, []);
 
   return (
-    <div className="statistcs">
-      <div className=" statistcs__top">
-        <div>
-          <div className="flex">
-            <span>Resurs yuklagan ta’lim muassasalari soni: </span>
-            <h4>8,846 ta</h4>
-          </div>
-          <TinyArea data={data} {...config} className="chart" />
+    <Spin tip="Yuklanmaoqda..." spinning={loading}>
+      <div className="statistcs">
+        <div className="flex" style={{ marginBottom: 16 }}>
+          <h3>
+            Ma'lum bir ta'lim muassasasining ma'lumotlarini ko'rish uchun uni
+            ro'yhatdan tanlang !
+          </h3>
+          <Select
+            showSearch
+            allowClear
+            style={{ width: 600 }}
+            placeholder="Qidirish"
+            defaultValue={+collegeId == 0 ? null : +collegeId}
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={list}
+            onChange={setCollege}
+          />
         </div>
-        <div>
-          <div className="flex">
-            <span>Jami yuklangan resurslar soni:</span>
-            <h4>6560 ta</h4>
-          </div>
-          <Column data={dataPlot} {...configPlot} className="chart" />
-        </div>
-        <div>
-          <div className="flex">
-            <span>Jami yuklab olingan resurslar</span>
-            <h4>78%</h4>
-          </div>
 
-          <Gauge {...configGuage} className="chart" />
+        <div className=" statistcs__top">
+          {isManagment() && (
+            <div>
+              <div className="flex">
+                <span>Resurs yuklagan ta’lim muassasalari soni: </span>
+                <h4>8,846 ta</h4>
+              </div>
+              <TinyArea data={data} {...config} className="chart" />
+            </div>
+          )}
+          <div>
+            <div className="flex">
+              <span>Jami yuklangan resurslar soni:</span>
+              <h4>{all} ta</h4>
+            </div>
+            <Column {...configPlot} className="chart" />
+          </div>
+          <div>
+            <div className="flex">
+              <span>Jami yuklab olingan resurslar</span>
+              <h4>{percent * 100}%</h4>
+            </div>
+
+            <Gauge {...configGuage} className="chart" />
+          </div>
+        </div>
+
+        <div className="statistcs__bottom">
+          <div>
+            <h3>Yuklab olishlarni vaqt bo‘yicha statistikasi</h3>
+            <Area {...configArea} className="chart" />
+          </div>
+          <div style={{ width: 700 }}>
+            <h3>Resurs turlari bo‘yicha yuklanganlar soni</h3>
+            <Pie {...configPie} className="chart" />
+          </div>
         </div>
       </div>
-
-      <div className="statistcs__bottom">
-        <div>
-          <h3>Yuklab olishlarni vaqt bo‘yicha statistikasi</h3>
-          <Area data={dataArea} {...configArea} className="chart" />
-        </div>
-        <div>
-          <h3>Resurs turlari bo‘yicha statistika</h3>
-          <Pie {...configPie} className="chart" />
-        </div>
-      </div>
-    </div>
+    </Spin>
   );
 };
 

@@ -65,11 +65,20 @@ export const DelThemeConfig = (id) => {
 };
 
 // Stats
+export const GetUserStatConfig = () => {
+  return GetFunc(`/statistic/countResourceAndUser`);
+};
 export const GetUniverStatConfig = () => {
   return GetFunc(`/statistic/getResourceCountByEdu`);
 };
-export const GetUserStatConfig = () => {
-  return GetFunc(`/statistic/countResourceAndUser`);
+export const GetResourceByDateConfig = () => {
+  return GetFunc(`/statistic/resourceCountDateByEdu`);
+};
+export const GetDownloadResourceByDateConfig = () => {
+  return GetFunc(`/statistic/downloadResourceCountDateByEdu`);
+};
+export const GetPerfectDownloadConfig = () => {
+  return GetFunc(`/statistic/downloadResourceCountByEdu`);
 };
 
 //  Managment API----------------------------------------------------------------
@@ -79,7 +88,10 @@ export const GetBoshqarmaInfoConfig = () => {
   return GetFunc(`/management/userInfo`);
 };
 export const GetMyCollegesConfig = (params) => {
-  return GetFunc(`/management/getAllEduAdmin?size=10${params ?? ""}`);
+  return GetFunc(`/management/getAllEdu?size=10${params ?? ""}`);
+};
+export const GetMyCollegesListConfig = () => {
+  return GetFunc(`/management/getAllEdu?size=10000`);
 };
 export const GetUniverDirectionsConfig = (params) => {
   return GetFunc(`/management/getAllDirectionEdu?size=10${params ?? ""}`);
@@ -92,6 +104,20 @@ export const GetUniverThemesConfig = (params) => {
 };
 export const GetUniverResourceConfig = (id) => {
   return GetFunc(`/management/getAllResource?themeId=${id}`);
+};
+
+// Managment Stats
+export const GetManagmentStatConfig = (params) => {
+  return GetFunc(`/statistic/resourceCountByRegion${params ?? ""}`);
+};
+export const GetResourceByDateRegionConfig = (params) => {
+  return GetFunc(`/statistic/resourceCountDateByRegion${params ?? ""}`);
+};
+export const GetDownloadResourceByDateRegionConfig = (params) => {
+  return GetFunc(`/statistic/downloadResourceCountDateByRegion${params ?? ""}`);
+};
+export const GetPerfectDownloadRegionConfig = (params) => {
+  return GetFunc(`/statistic/downloadResourceCountByRegion${params ?? ""}`);
 };
 
 // User APi----------------------------------------------------------------------------------
