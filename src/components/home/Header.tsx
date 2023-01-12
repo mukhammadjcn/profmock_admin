@@ -45,10 +45,9 @@ const Header: React.FC = () => {
 
         {/* Navbar */}
         <nav className="header-user__nav">
-          <Link to={"#item"}>Asosiy</Link>
-          <Link to={"#item"}>Afzalliklar</Link>
-          <Link to={"#item"}>Yo‘riqnoma</Link>
-          <Link to={"#item"}>Talablar</Link>
+          <a href="/">Asosiy</a>
+          <a href="/#advices">Afzalliklar</a>
+          <a href="/#requests">Talablar</a>
         </nav>
 
         {/* One if button */}

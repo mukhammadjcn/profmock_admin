@@ -132,19 +132,14 @@ const Theme: React.FC = () => {
   const prettyName = (name: string) => {
     let result = decodeURI(
       name
-        .replace("http://", "")
         .replace("https://", "")
+        .replace("http://", "")
         .replace("prof-dist.edu.uz/api/user/download/", "")
         .replace("prof-dist.edu.uz/api/user/videoStream/", "")
-    ).slice(6);
+    );
 
-    let reversed = result.split(".");
-    reversed.pop();
-
-    let fileName = reversed.join(".");
-
-    if (fileName.length <= 16) return fileName;
-    else return fileName.slice(0, 16) + `...`;
+    if (result.length <= 30) return result;
+    else return result.slice(0, 30) + `...`;
   };
   const giveColor = (name: string) => {
     return name == "Fan (amaliyot) haqida"

@@ -73,7 +73,7 @@ const Statistcs: React.FC = () => {
     data: barChat,
     meta: {
       count: {
-        alias: "Yuklab olishlar soni",
+        alias: "Yuklanganlar soni",
       },
     },
   };
@@ -87,10 +87,15 @@ const Statistcs: React.FC = () => {
     },
     areaStyle: () => {
       return {
-        fill: "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
+        fill: "l(270) 0:#7ec2f350 0.5:#7ec2f3 1:#1890ff",
       };
     },
     data: lineChat,
+    meta: {
+      count: {
+        alias: "Yuklab olishlar soni",
+      },
+    },
   };
 
   const data = [
@@ -130,7 +135,7 @@ const Statistcs: React.FC = () => {
         },
       },
       subTickLine: {
-        count: 2,
+        count: 3,
       },
     },
   };
@@ -173,7 +178,12 @@ const Statistcs: React.FC = () => {
       setBarChart(array);
 
       const dateStat = await GetDownloadResourceByDateConfig();
-      setLineChart(dateStat.data);
+      setLineChart(
+        dateStat.data.sort(
+          (a: any, b: any) =>
+            new Date(a?.sana).getTime() - new Date(b?.sana).getTime()
+        )
+      );
 
       const percentStat = await GetPerfectDownloadConfig();
       setPercent((Number(percentStat.data?.jami) || 0) / 100);
@@ -214,9 +224,14 @@ const Statistcs: React.FC = () => {
 
       console.log(array);
 
-      // Region stats
+      // Daily download stats
       const dateStat = await GetDownloadResourceByDateRegionConfig(urlMaker());
-      setLineChart(dateStat.data);
+      setLineChart(
+        dateStat.data.sort(
+          (a: any, b: any) =>
+            new Date(a?.sana).getTime() - new Date(b?.sana).getTime()
+        )
+      );
     } catch (error) {
       CatchError(error);
     }
@@ -230,30 +245,34 @@ const Statistcs: React.FC = () => {
   return (
     <Spin tip="Yuklanmaoqda..." spinning={loading}>
       <div className="statistcs">
-        <div className="flex" style={{ marginBottom: 16 }}>
-          <h3>
-            Ma'lum bir ta'lim muassasasining ma'lumotlarini ko'rish uchun uni
-            ro'yhatdan tanlang !
-          </h3>
-          <Select
-            showSearch
-            allowClear
-            style={{ width: 600 }}
-            placeholder="Qidirish"
-            defaultValue={+collegeId == 0 ? null : +collegeId}
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={list}
-            onChange={setCollege}
-          />
-        </div>
+        {isManagment() && (
+          <div className="flex" style={{ marginBottom: 16 }}>
+            <h3>
+              Ma'lum bir ta'lim muassasasining ma'lumotlarini ko'rish uchun uni
+              ro'yhatdan tanlang !
+            </h3>
+            <Select
+              showSearch
+              allowClear
+              style={{ width: 600 }}
+              placeholder="Qidirish"
+              defaultValue={+collegeId == 0 ? null : +collegeId}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              options={list}
+              onChange={setCollege}
+            />
+          </div>
+        )}
 
         <div className=" statistcs__top">
           {isManagment() && (
@@ -275,7 +294,7 @@ const Statistcs: React.FC = () => {
           <div>
             <div className="flex">
               <span>Jami yuklab olingan resurslar</span>
-              <h4>{percent * 100}%</h4>
+              <h4>{Number(percent * 100).toFixed()}%</h4>
             </div>
 
             <Gauge {...configGuage} className="chart" />

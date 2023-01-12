@@ -63,7 +63,7 @@ const Home: React.FC = () => {
 
         <div className="container">
           {/* Home-user advices */}
-          <section className="home-user__advices">
+          <section className="home-user__advices" id="advices">
             <h4 className="label">Prof-dist.UZ AFZALLIKLARI</h4>
             <h2 className="title">Tizmning afzalliklari va qulayliklari</h2>
             <div className="row flex">
@@ -207,7 +207,7 @@ const Home: React.FC = () => {
           </section>
 
           {/* Home-user talablar */}
-          <section className="home-user__requests">
+          <section className="home-user__requests" id="requests">
             <h2 className="title">Dasturiy platformaga qoʻyilgan talablar</h2>
             {/* <p>Talablar ro‘yxati</p> */}
             <br />
