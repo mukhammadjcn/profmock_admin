@@ -20,6 +20,10 @@ import MuassasaDirection from "./Muassasa/Direction";
 import Boshqarma from "./Boshqarma";
 import BoshqarmaUniversities from "./Boshqarma/BoshqarmaUniversities";
 
+// Vazirlik Page
+import Vazirlik from "./Vazirlik";
+import VazirlikHome from "./Vazirlik/VazirlikHome";
+
 // User pages
 import Home from "./User/Home";
 import UserLogin from "./User/login";
@@ -46,4 +50,6 @@ export {
   Profile,
   Resources,
   UserLogin,
+  Vazirlik,
+  VazirlikHome,
 };

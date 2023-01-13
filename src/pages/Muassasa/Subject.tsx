@@ -27,8 +27,9 @@ import {
   GetMySubjectsConfig,
   DelSubjectConfig,
   GetUniverSubjectsConfig,
+  GetSubjectsByMinistryConfig,
 } from "src/server/config/Urls";
-import { role } from "src/server/Host";
+import { isAdmin, isManagment, role } from "src/server/Host";
 
 const Subject: React.FC = () => {
   const [form] = Form.useForm();
@@ -54,7 +55,7 @@ const Subject: React.FC = () => {
       key: "name",
       render: (_, item) => (
         <Link
-          to={`/college/direction/subject/theme?directionSubjectEduId=${item.key}`}
+          to={`/college/directions/subject/theme?directionSubjectEduId=${item.key}`}
           onClick={() => LastPage()}
         >
           {item.name}
@@ -151,6 +152,47 @@ const Subject: React.FC = () => {
       width: 150,
     },
   ];
+  const columnsMinistry: ColumnsType<ISubject> = [
+    {
+      title: "Fan nomi",
+      dataIndex: "name",
+      key: "name",
+      render: (_, item) => (
+        <Link
+          to={`/ministry/regions/universities/directions/subject/theme?directionSubjectEduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
+          {item.name}
+        </Link>
+      ),
+    },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   width: 180,
+    //   render: (_, item) =>
+    //     item.status ? (
+    //       <Badge status="success" text="File yuklangan" />
+    //     ) : (
+    //       <Badge status="error" text="File yuklanmagan" />
+    //     ),
+    // },
+    {
+      title: "Mavzular soni",
+      dataIndex: "theme_number",
+      key: "theme_number",
+      align: "center",
+      width: 150,
+    },
+    {
+      title: "Resurslar soni",
+      dataIndex: "resurs_number",
+      key: "resurs_number",
+      align: "center",
+      width: 150,
+    },
+  ];
   const selectProps: SelectProps = {
     mode: "multiple",
     showSearch: true,
@@ -176,13 +218,21 @@ const Subject: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
-    role == "ROLE_EDUADMIN" ? GetMySubjects() : GetSubjectsMangmentList();
+    isAdmin()
+      ? GetMySubjects()
+      : isManagment()
+      ? GetSubjectsMangmentList()
+      : GetSubjectsMinistryList();
     window.scrollTo(0, 0);
   };
   const setSemester = (val: any) => {
     setCurrentSem(val);
     handleMakeParams("semesterId", val);
-    role == "ROLE_EDUADMIN" ? GetMySubjects() : GetSubjectsMangmentList();
+    isAdmin()
+      ? GetMySubjects()
+      : isManagment()
+      ? GetSubjectsMangmentList()
+      : GetSubjectsMinistryList();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -304,13 +354,45 @@ const Subject: React.FC = () => {
     setLoading(false);
   };
 
+  // For managment admin
+  const GetSubjectsMinistryList = async () => {
+    setLoading(true);
+    try {
+      const { data } = await GetSubjectsByMinistryConfig(urlMaker());
+
+      // Set pagination data
+      setTotal(data.totalElements);
+
+      // Set Data
+      setSubjects(
+        data?.content.reduce(
+          (prev: any, next: any) => [
+            ...prev,
+            {
+              name: next?.name,
+              key: next?.subjectDirectionEduId,
+              theme_number: next?.countTheme ?? 0,
+              resurs_number: next?.countResource ?? 0,
+            },
+          ],
+          []
+        )
+      );
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+
   // Get functions by role
   const getByRole = () => {
-    if (role == "ROLE_EDUADMIN") {
+    if (isAdmin()) {
       GetMySubjects();
       GetSubjectsList();
-    } else {
+    } else if (isManagment()) {
       GetSubjectsMangmentList();
+    } else {
+      GetSubjectsMinistryList();
     }
   };
 
@@ -359,7 +441,7 @@ const Subject: React.FC = () => {
             },
           ]}
         />
-        {role == "ROLE_EDUADMIN" && (
+        {isAdmin() && (
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -372,7 +454,13 @@ const Subject: React.FC = () => {
 
       <div className="subject__table">
         <Table
-          columns={role == "ROLE_EDUADMIN" ? columns : columnsBoshqarma}
+          columns={
+            isAdmin()
+              ? columns
+              : isManagment()
+              ? columnsBoshqarma
+              : columnsMinistry
+          }
           dataSource={subjects}
           loading={loading}
           onChange={setPage}

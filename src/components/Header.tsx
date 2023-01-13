@@ -23,6 +23,41 @@ const Header: React.FC = () => {
     });
   };
 
+  if (role == "ROLE_ADMIN") {
+    return (
+      <div className="p8-32 header">
+        <Link to={"/ministry/statistcs"} className="logo">
+          <img src={require("src/assets/images/logo.png")} alt="" />
+          <span>prof-dist.edu.uz</span>
+        </Link>
+
+        <ul className="flex">
+          <NavLink
+            to={"/ministry/statistcs"}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <DashboardOutlined />
+            Statistika
+          </NavLink>
+          <NavLink
+            to={"/ministry/regions"}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <ClusterOutlined /> Boshqarmalar ro'yhati
+          </NavLink>
+          {/* <NavLink
+            to={"/ministry/sozlama"}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <SettingOutlined />
+            Sozlamalar
+          </NavLink> */}
+        </ul>
+
+        <h3 onClick={logout}>Tizimdan chiqish</h3>
+      </div>
+    );
+  }
   if (role == "ROLE_MANAGEMENTADMIN") {
     return (
       <div className="p8-32 header">
@@ -74,7 +109,7 @@ const Header: React.FC = () => {
           Statistika
         </NavLink>
         <NavLink
-          to={"/college/direction"}
+          to={"/college/directions"}
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           <ClusterOutlined /> Ta’lim muasassasi

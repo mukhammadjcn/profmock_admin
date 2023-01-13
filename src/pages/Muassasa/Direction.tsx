@@ -10,10 +10,11 @@ import {
   GetDirectionsConfig,
   GetMyDirectionsConfig,
   GetUniverDirectionsConfig,
+  GetDirectionsByMinistryConfig,
 } from "src/server/config/Urls";
 import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, Table, Form, Select, SelectProps, message } from "antd";
-import { role } from "src/server/Host";
+import { isAdmin, isManagment, role } from "src/server/Host";
 import { resourceType } from "src/assets/data";
 
 const Direaction: React.FC = () => {
@@ -37,7 +38,7 @@ const Direaction: React.FC = () => {
       key: "name",
       render: (_, item) => (
         <Link
-          to={`/college/direction/subject?semesterId=1&directionEduId=${item.key}`}
+          to={`/college/directions/subject?semesterId=1&directionEduId=${item.key}`}
           onClick={() => LastPage()}
         >
           {item.name}
@@ -89,6 +90,28 @@ const Direaction: React.FC = () => {
       width: 200,
     },
   ];
+  const columnsMinistry: ColumnsType<IDirections> = [
+    {
+      title: "Mutaxassislik nomi",
+      dataIndex: "name",
+      key: "name",
+      render: (_, item) => (
+        <Link
+          to={`/ministry/regions/universities/directions/subject?semesterId=1&directionEduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
+          {item.name}
+        </Link>
+      ),
+    },
+    {
+      title: "Fanlar soni",
+      dataIndex: "subject_number",
+      key: "subject_number",
+      align: "center",
+      width: 200,
+    },
+  ];
   const selectProps: SelectProps = {
     mode: "multiple",
     showSearch: true,
@@ -114,7 +137,11 @@ const Direaction: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
-    role == "ROLE_EDUADMIN" ? GetMyDirections() : GetDirectionListManagment();
+    isAdmin()
+      ? GetMyDirections()
+      : isManagment()
+      ? GetDirectionListManagment()
+      : GetDirectionListMinistry();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -249,14 +276,45 @@ const Direaction: React.FC = () => {
     setLoading(false);
   };
 
+  // For Ministry admin
+  const GetDirectionListMinistry = async () => {
+    setLoading(true);
+    try {
+      const { data } = await GetDirectionsByMinistryConfig(urlMaker());
+
+      // Set pagination data
+      setTotal(data.totalElements);
+
+      // Set Data
+      setDirections(
+        data?.content.reduce(
+          (prev: any, next: any) => [
+            ...prev,
+            {
+              key: next?.directionEduId,
+              name: `${next?.code} - ${next?.name}`,
+              subject_number: next?.subjectCount ?? 0,
+            },
+          ],
+          []
+        )
+      );
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
+
   // Get functions by role
   const getByRole = () => {
-    if (role == "ROLE_EDUADMIN") {
+    if (isAdmin()) {
       GetStats();
       GetMyDirections();
       GetDirectionsList();
-    } else {
+    } else if (isManagment()) {
       GetDirectionListManagment();
+    } else {
+      GetDirectionListMinistry();
     }
   };
 
@@ -266,7 +324,7 @@ const Direaction: React.FC = () => {
 
   return (
     <div className="flex">
-      {role == "ROLE_EDUADMIN" && (
+      {isAdmin() && (
         <div className="college__info">
           {stats.length > 0 ? (
             stats?.map((item: any, index: number) => (
@@ -284,7 +342,7 @@ const Direaction: React.FC = () => {
       )}
 
       <div className="college__directions">
-        {role == "ROLE_EDUADMIN" && (
+        {isAdmin() && (
           <div className="flex">
             <h4>Ta'lim muassasaning mutaxasisliklari ro'yhati</h4>
             <Button type="primary" onClick={() => setIsModalOpen(true)}>
@@ -294,7 +352,13 @@ const Direaction: React.FC = () => {
         )}
 
         <Table
-          columns={role == "ROLE_EDUADMIN" ? columns : columnsBoshqarma}
+          columns={
+            isAdmin()
+              ? columns
+              : isManagment()
+              ? columnsBoshqarma
+              : columnsMinistry
+          }
           dataSource={directions}
           loading={loading}
           onChange={setPage}

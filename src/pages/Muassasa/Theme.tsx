@@ -23,6 +23,8 @@ import {
   GetAllResourceConfig,
   GetUniverThemesConfig,
   GetUniverResourceConfig,
+  GetThemesByMinistryConfig,
+  GetResourcesByMinistryConfig,
 } from "src/server/config/Urls";
 import { ITheme } from "types/index";
 import { CatchError } from "src/utils/index";
@@ -34,7 +36,7 @@ import {
   DeleteOutlined,
   ExclamationCircleFilled,
 } from "@ant-design/icons";
-import { role } from "src/server/Host";
+import { isAdmin, isManagment, role } from "src/server/Host";
 import { resourceSelect } from "src/assets/data";
 
 const Theme: React.FC = () => {
@@ -117,7 +119,7 @@ const Theme: React.FC = () => {
     return e?.fileList[0];
   };
   const delTheme = (id: number) =>
-    role == "ROLE_EDUADMIN" ? (
+    isAdmin() ? (
       <DeleteOutlined
         onClick={(event) => {
           // If you don't want click extra trigger collapse, you can prevent this:
@@ -178,10 +180,11 @@ const Theme: React.FC = () => {
   const GetMyThemes = async () => {
     setLoading(true);
     try {
-      const { data } =
-        role == "ROLE_EDUADMIN"
-          ? await GetMyThemesConfig(urlMaker())
-          : await GetUniverThemesConfig(urlMaker());
+      const { data } = isAdmin()
+        ? await GetMyThemesConfig(urlMaker())
+        : isManagment()
+        ? await GetUniverThemesConfig(urlMaker())
+        : await GetThemesByMinistryConfig(urlMaker());
 
       // Set pagination data
       setTotal(data.totalElements);
@@ -198,10 +201,11 @@ const Theme: React.FC = () => {
       setThemeId(+id);
       setLoadingIn(true);
       try {
-        const { data } =
-          role == "ROLE_EDUADMIN"
-            ? await GetAllResourceConfig(id)
-            : await GetUniverResourceConfig(id);
+        const { data } = isAdmin()
+          ? await GetAllResourceConfig(id)
+          : isManagment()
+          ? await GetUniverResourceConfig(id)
+          : await GetResourcesByMinistryConfig(id);
         setResources(data);
       } catch (error) {
         CatchError(error);
@@ -297,7 +301,7 @@ const Theme: React.FC = () => {
       <div className="theme__header">
         <h1>Mavzular</h1>
 
-        {role == "ROLE_EDUADMIN" && (
+        {isAdmin() && (
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -364,7 +368,7 @@ const Theme: React.FC = () => {
                                 count={`Yuklab olishlar soni: ${i?.countDownload}`}
                                 color="#003A8C"
                               />
-                              {role == "ROLE_EDUADMIN" && (
+                              {isAdmin() && (
                                 <Button
                                   danger
                                   type="primary"
@@ -376,7 +380,7 @@ const Theme: React.FC = () => {
                           </div>
                         ))}
 
-                        {role == "ROLE_EDUADMIN" && (
+                        {isAdmin() && (
                           <Button
                             type="dashed"
                             onClick={() => {

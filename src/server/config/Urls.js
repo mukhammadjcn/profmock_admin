@@ -15,8 +15,8 @@ export const GetUserInfoConfig = () => {
 export const GetDirectionsConfig = () => {
   return GetFunc(`/eduadmin/join/directions`);
 };
-export const GetMyDirectionsConfig = (params) => {
-  return GetFunc(`/eduadmin/join/getAllDirectionEdu?size=10${params ?? ""}`);
+export const GetMyDirectionsConfig = (params = "") => {
+  return GetFunc(`/eduadmin/join/getAllDirectionEdu?size=10${params}`);
 };
 export const PostDirectionConfig = (data) => {
   return EditFunc(`/eduadmin/join/joinDirectionEdu`, data, "PATCH");
@@ -29,10 +29,8 @@ export const DelDirectionConfig = (id) => {
 export const GetSubjectsConfig = () => {
   return GetFunc(`/eduadmin/join/subjects`);
 };
-export const GetMySubjectsConfig = (params) => {
-  return GetFunc(
-    `/eduadmin/join/getAllSubjectDirection?size=10${params ?? ""}`
-  );
+export const GetMySubjectsConfig = (params = "") => {
+  return GetFunc(`/eduadmin/join/getAllSubjectDirection?size=10${params}`);
 };
 export const PostSubjectConfig = (data) => {
   return CreateFunc(`/eduadmin/join/joinSubjectAndDirection`, data);
@@ -42,8 +40,8 @@ export const DelSubjectConfig = (id) => {
 };
 
 // Get theme
-export const GetMyThemesConfig = (params) => {
-  return GetFunc(`/eduadmin/allTheme?size=10${params ?? ""}`);
+export const GetMyThemesConfig = (params = "") => {
+  return GetFunc(`/eduadmin/allTheme?size=10${params}`);
 };
 export const GetAllResourceConfig = (id) => {
   return GetFunc(`/eduadmin/getAllResource?themeId=${id}`);
@@ -87,37 +85,37 @@ export const GetPerfectDownloadConfig = () => {
 export const GetBoshqarmaInfoConfig = () => {
   return GetFunc(`/management/userInfo`);
 };
-export const GetMyCollegesConfig = (params) => {
-  return GetFunc(`/management/getAllEdu?size=10${params ?? ""}`);
+export const GetMyCollegesConfig = (params = "") => {
+  return GetFunc(`/management/getAllEdu?size=10${params}`);
 };
 export const GetMyCollegesListConfig = () => {
   return GetFunc(`/management/getAllEdu?size=10000`);
 };
-export const GetUniverDirectionsConfig = (params) => {
-  return GetFunc(`/management/getAllDirectionEdu?size=10${params ?? ""}`);
+export const GetUniverDirectionsConfig = (params = "") => {
+  return GetFunc(`/management/getAllDirectionEdu?size=10${params}`);
 };
-export const GetUniverSubjectsConfig = (params) => {
-  return GetFunc(`/management/getAllSubjectDirection?size=10${params ?? ""}`);
+export const GetUniverSubjectsConfig = (params = "") => {
+  return GetFunc(`/management/getAllSubjectDirection?size=10${params}`);
 };
-export const GetUniverThemesConfig = (params) => {
-  return GetFunc(`/management/allTheme?size=10${params ?? ""}`);
+export const GetUniverThemesConfig = (params = "") => {
+  return GetFunc(`/management/allTheme?size=10${params}`);
 };
 export const GetUniverResourceConfig = (id) => {
   return GetFunc(`/management/getAllResource?themeId=${id}`);
 };
 
 // Managment Stats
-export const GetManagmentStatConfig = (params) => {
-  return GetFunc(`/statistic/resourceCountByRegion${params ?? ""}`);
+export const GetManagmentStatConfig = (params = "") => {
+  return GetFunc(`/statistic/resourceCountByRegion${params}`);
 };
-export const GetResourceByDateRegionConfig = (params) => {
-  return GetFunc(`/statistic/resourceCountDateByRegion${params ?? ""}`);
+export const GetResourceByDateRegionConfig = (params = "") => {
+  return GetFunc(`/statistic/resourceCountDateByRegion${params}`);
 };
-export const GetDownloadResourceByDateRegionConfig = (params) => {
-  return GetFunc(`/statistic/downloadResourceCountDateByRegion${params ?? ""}`);
+export const GetDownloadResourceByDateRegionConfig = (params = "") => {
+  return GetFunc(`/statistic/downloadResourceCountDateByRegion${params}`);
 };
-export const GetPerfectDownloadRegionConfig = (params) => {
-  return GetFunc(`/statistic/downloadResourceCountByRegion${params ?? ""}`);
+export const GetPerfectDownloadRegionConfig = (params = "") => {
+  return GetFunc(`/statistic/downloadResourceCountByRegion${params}`);
 };
 
 // User APi----------------------------------------------------------------------------------
@@ -139,12 +137,36 @@ export const RegisterCheckConfig = (data) => {
 export const GetUserConfig = () => {
   return GetFunc(`/user/userInfo`);
 };
-export const GetUserSubjectsConfig = (params) => {
-  return GetFunc(`/user/getSubjects?size=100${params ?? ""}`);
+export const GetUserSubjectsConfig = (params = "") => {
+  return GetFunc(`/user/getSubjects?size=100${params}`);
 };
-export const GetUserThemesConfig = (params) => {
-  return GetFunc(`/user/allTheme?size=10${params ?? ""}`);
+export const GetUserThemesConfig = (params = "") => {
+  return GetFunc(`/user/allTheme?size=10${params}`);
 };
 export const GetUserResourcesConfig = (id) => {
   return GetFunc(`/user/getAllResourceByUser?themeId=${id}`);
+};
+
+// Ministry api-----------------------------------------------------------------
+// Login ministry
+export const LoginAdminConfig = (params = "") => {
+  return CreateFunc(`auth/singInAdmin${params}`);
+};
+export const GetBoshqarmalarConfig = () => {
+  return GetFunc(`admin/managements?size=30`);
+};
+export const GetUniversitiesConfig = (params = "") => {
+  return GetFunc(`admin/getAllEdu?size=10${params}`);
+};
+export const GetDirectionsByMinistryConfig = (params = "") => {
+  return GetFunc(`admin/getAllDirectionEdu?size=10${params}`);
+};
+export const GetSubjectsByMinistryConfig = (params = "") => {
+  return GetFunc(`admin/getAllSubjectDirection?size=10${params}`);
+};
+export const GetThemesByMinistryConfig = (params = "") => {
+  return GetFunc(`admin/allTheme?size=10${params}`);
+};
+export const GetResourcesByMinistryConfig = (id) => {
+  return GetFunc(`admin/getAllResource?themeId=${id}`);
 };

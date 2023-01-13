@@ -22,9 +22,11 @@ import {
   Resources,
   Theme,
   UserLogin,
+  Vazirlik,
+  VazirlikHome,
 } from "./pages";
 import "src/styles/App.scss";
-import { isAdmin, isManagment, isUser } from "./server/Host";
+import { isAdmin, isManagment, isMinistry, isUser } from "./server/Host";
 import React from "react";
 
 const App: React.FC = () => {
@@ -52,7 +54,7 @@ const App: React.FC = () => {
           </Route>
         </Route>
 
-        {/* Login page */}
+        {/* Login page for admins*/}
         <Route
           path="login"
           element={
@@ -66,6 +68,18 @@ const App: React.FC = () => {
           }
         />
 
+        {/* Login page for admins*/}
+        <Route
+          path="super"
+          element={
+            isMinistry() ? (
+              <Navigate to="/ministry/statistcs" />
+            ) : (
+              <Login isMinistry={true} />
+            )
+          }
+        />
+
         {/* Musassasa pages */}
         <Route
           path="college"
@@ -74,7 +88,7 @@ const App: React.FC = () => {
           <Route index element={<Navigate to="statistcs" />} />
           <Route path="sozlama" element={<Sozlama />} />
           <Route path="statistcs" element={<Statistcs />} />
-          <Route path="direction">
+          <Route path="directions">
             <Route index element={<MuassasaDirection />} />
             <Route path=":subject">
               <Route index element={<MuassasaSubject />} />
@@ -95,12 +109,37 @@ const App: React.FC = () => {
           <Route path="statistcs" element={<Statistcs />} />
           <Route path="universities">
             <Route index element={<BoshqarmaUniversities />} />
-            <Route path=":direction">
+            <Route path=":directions">
               <Route index element={<MuassasaDirection />} />
               <Route path=":subject">
                 <Route index element={<MuassasaSubject />} />
                 <Route path=":theme">
                   <Route index element={<MuassasaTheme />} />
+                </Route>
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+
+        {/* Ministry page */}
+        <Route
+          path="ministry"
+          element={isMinistry() ? <Vazirlik /> : <Navigate to="/super" />}
+        >
+          <Route index element={<Navigate to="statistcs" />} />
+          {/* <Route path="sozlama" element={<Sozlama />} /> */}
+          <Route path="statistcs" element={<Statistcs />} />
+          <Route path="regions">
+            <Route index element={<VazirlikHome />} />
+            <Route path=":universities">
+              <Route index element={<BoshqarmaUniversities />} />
+              <Route path=":directions">
+                <Route index element={<MuassasaDirection />} />
+                <Route path=":subject">
+                  <Route index element={<MuassasaSubject />} />
+                  <Route path=":theme">
+                    <Route index element={<MuassasaTheme />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

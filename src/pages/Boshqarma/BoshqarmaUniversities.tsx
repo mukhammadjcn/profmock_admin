@@ -7,8 +7,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import {
   GetMyCollegesConfig,
   GetManagmentStatConfig,
+  GetUniversitiesConfig,
 } from "src/server/config/Urls";
 import { resourceType } from "src/assets/data";
+import { isManagment } from "src/server/Host";
 
 const BoshqarmaUniversities: React.FC = () => {
   const [stats, setStats] = useState<any>([]);
@@ -38,6 +40,56 @@ const BoshqarmaUniversities: React.FC = () => {
       ),
     },
     {
+      title: "Resurslar soni",
+      dataIndex: "count",
+      key: "count",
+      align: "center",
+      width: 200,
+    },
+    {
+      title: "Viloyat",
+      dataIndex: "region",
+      key: "region",
+      align: "center",
+      width: 200,
+    },
+    {
+      title: "Tuman",
+      dataIndex: "district",
+      key: "district",
+      align: "center",
+      width: 200,
+    },
+  ];
+  const columnsMinistry: ColumnsType<IUniverList> = [
+    {
+      title: "Taʼlim muassasasi nomi",
+      dataIndex: "eduName",
+      key: "eduName",
+      render: (_, item) => (
+        <Link
+          to={`/ministry/regions/universities/directions?page=1&eduId=${item.key}`}
+          onClick={() => LastPage()}
+        >
+          {item.eduName}
+        </Link>
+      ),
+    },
+    {
+      title: "Resurslar soni",
+      dataIndex: "count",
+      key: "count",
+      align: "center",
+      width: 200,
+    },
+    {
+      title: "Viloyat",
+      dataIndex: "region",
+      key: "region",
+      align: "center",
+      width: 200,
+    },
+    {
       title: "Tuman",
       dataIndex: "district",
       key: "district",
@@ -56,7 +108,7 @@ const BoshqarmaUniversities: React.FC = () => {
   const setPage = (val: any) => {
     setCurrent(val.current);
     handleMakeParams("page", val.current);
-    GetMyDirections();
+    isManagment() ? GetMyDirections() : GetMinistryDirection();
     window.scrollTo(0, 0);
   };
   const setSearch = (val: any) => {
@@ -67,7 +119,7 @@ const BoshqarmaUniversities: React.FC = () => {
     // set search
     setSearh(val);
     handleMakeParams("search", val);
-    GetMyDirections();
+    isManagment() ? GetMyDirections() : GetMinistryDirection();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -79,6 +131,18 @@ const BoshqarmaUniversities: React.FC = () => {
     return url.length > 2 ? url : "";
   };
 
+  const GetStats = async () => {
+    try {
+      const { data } = await GetManagmentStatConfig();
+      let array = resourceType;
+      array.forEach((item: any) => {
+        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
+      });
+      setStats(array);
+    } catch (error) {
+      CatchError(error);
+    }
+  };
   const GetMyDirections = async () => {
     setLoading(true);
     try {
@@ -105,40 +169,65 @@ const BoshqarmaUniversities: React.FC = () => {
     }
     setLoading(false);
   };
-  const GetStats = async () => {
+  const GetMinistryDirection = async () => {
+    setLoading(true);
     try {
-      const { data } = await GetManagmentStatConfig();
-      let array = resourceType;
-      array.forEach((item: any) => {
-        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
-      });
-      setStats(array);
+      const { data } = await GetUniversitiesConfig(urlMaker());
+
+      // Set pagination data
+      setTotal(data.totalElements);
+
+      // Set Data
+      setDirections(
+        data?.content.reduce(
+          (prev: any, next: any) => [
+            ...prev,
+            {
+              key: next.id,
+              ...next,
+            },
+          ],
+          []
+        )
+      );
     } catch (error) {
       CatchError(error);
+    }
+    setLoading(false);
+  };
+
+  // Get requests by role
+  const getByRole = () => {
+    if (isManagment()) {
+      GetStats();
+      GetMyDirections();
+    } else {
+      GetMinistryDirection();
     }
   };
 
   useEffect(() => {
-    GetStats();
-    GetMyDirections();
+    getByRole();
   }, []);
 
   return (
     <div className="flex">
-      <div className="college__info">
-        {stats.length > 0 ? (
-          stats?.map((item: any, index: number) => (
-            <div className="flex" key={index}>
-              <span>{item?.type}</span>
-              <h4>{item?.count}</h4>
-            </div>
-          ))
-        ) : (
-          <h3 style={{ fontWeight: 500, fontSize: 17 }}>
-            Hech qanday resurs yuklanmagan !
-          </h3>
-        )}
-      </div>
+      {isManagment() && (
+        <div className="college__info">
+          {stats.length > 0 ? (
+            stats?.map((item: any, index: number) => (
+              <div className="flex" key={index}>
+                <span>{item?.type}</span>
+                <h4>{item?.count}</h4>
+              </div>
+            ))
+          ) : (
+            <h3 style={{ fontWeight: 500, fontSize: 17 }}>
+              Hech qanday resurs yuklanmagan !
+            </h3>
+          )}
+        </div>
+      )}
 
       <div className="college__directions">
         <div className="flex" style={{ justifyContent: "flex-end" }}>
@@ -151,16 +240,16 @@ const BoshqarmaUniversities: React.FC = () => {
           />
         </div>
         <Table
-          columns={columns}
-          dataSource={directions}
-          loading={loading}
-          onChange={setPage}
           pagination={{
             total: total,
             pageSize: 10,
             current: +current,
             showSizeChanger: false,
           }}
+          onChange={setPage}
+          loading={loading}
+          dataSource={directions}
+          columns={isManagment() ? columns : columnsMinistry}
         />
       </div>
     </div>

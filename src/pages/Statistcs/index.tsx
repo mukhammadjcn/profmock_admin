@@ -99,8 +99,8 @@ const Statistcs: React.FC = () => {
   };
 
   const data = [
-    264, 417, 438, 887, 309, 397, 550, 575, 563, 430, 525, 592, 492, 467, 513,
-    546, 983, 340, 539, 243, 226, 192,
+    24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0,
   ];
   const config = {
     height: 60,
@@ -237,9 +237,14 @@ const Statistcs: React.FC = () => {
     }
     setLoading(false);
   };
+  const getStatsMinistry = async () => {};
 
   useEffect(() => {
-    isAdmin() ? getStatsEdu() : getStatsManagment();
+    isAdmin()
+      ? getStatsEdu()
+      : isManagment()
+      ? getStatsManagment()
+      : getStatsMinistry();
   }, []);
 
   return (
@@ -275,7 +280,7 @@ const Statistcs: React.FC = () => {
         )}
 
         <div className=" statistcs__top">
-          {isManagment() && (
+          {/* {isManagment() && (
             <div>
               <div className="flex">
                 <span>Resurs yuklagan ta’lim muassasalari soni: </span>
@@ -283,7 +288,7 @@ const Statistcs: React.FC = () => {
               </div>
               <TinyArea data={data} {...config} className="chart" />
             </div>
-          )}
+          )} */}
           <div>
             <div className="flex">
               <span>Jami yuklangan resurslar soni:</span>

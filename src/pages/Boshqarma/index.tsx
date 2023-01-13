@@ -36,7 +36,7 @@ const Muassasa: React.FC = () => {
     const current = window.location.pathname + window.location.search;
 
     if (last == current) {
-      navigate("/college/direction");
+      navigate("/administration/directions");
     } else {
       navigate(`${last}`);
     }

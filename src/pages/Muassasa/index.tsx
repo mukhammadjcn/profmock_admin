@@ -22,9 +22,9 @@ const Muassasa: React.FC = () => {
       ? "Statistika"
       : keyword?.includes("sozlama")
       ? "Sozlamalar"
-      : keyword?.includes("direction/subject/theme")
+      : keyword?.includes("directions/subject/theme")
       ? "Mavzular"
-      : keyword?.includes("direction/subject")
+      : keyword?.includes("directions/subject")
       ? "Fanlar"
       : userInfo?.eduName;
   };
@@ -34,7 +34,7 @@ const Muassasa: React.FC = () => {
     const current = window.location.pathname + window.location.search;
 
     if (last == current) {
-      navigate("/college/direction");
+      navigate("/college/directions");
     } else {
       navigate(`${last}`);
     }

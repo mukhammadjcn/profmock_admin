@@ -28,6 +28,15 @@ export interface IUniverList {
   eduName: string;
   district: string;
 }
+export interface IBoshqarmaList {
+  key: string;
+  id: number;
+  region: string;
+  address: string;
+  count: number;
+  phoneNumber: string;
+  name: string;
+}
 
 // ------------------------------------------
 export interface IUser {

@@ -21,6 +21,7 @@ export const setLocal = (name, value) => localStorage.setItem(name, value);
 export const isUser = () => token && role == "ROLE_USER";
 export const isAdmin = () => token && role == "ROLE_EDUADMIN";
 export const isManagment = () => token && role == "ROLE_MANAGEMENTADMIN";
+export const isMinistry = () => token && role == "ROLE_ADMIN";
 
 // Requests header
 export let headers = {
