@@ -45,23 +45,28 @@ const Sozlama: React.FC = () => {
       <div className="sozlama__noImage">
         <div className="flex">
           <h1>Taʼlim muassasasi pasporti</h1>
-          <Button type="primary">Tahrirlash</Button>
         </div>
 
         <h2>{userInfo?.fullName}</h2>
         <ul>
-          <li className="flex">
-            <span>TM id:</span>
-            <h4>{userInfo?.id}</h4>
-          </li>
-          <li className="flex">
-            <span>Nomi:</span>
-            <h4>{userInfo?.eduName}</h4>
-          </li>
-          <li className="flex">
-            <span>Manzil:</span>
-            <h4>{userInfo?.eduAddress}</h4>
-          </li>
+          {userInfo?.id && (
+            <li className="flex">
+              <span>TM id:</span>
+              <h4>{userInfo?.id}</h4>
+            </li>
+          )}
+          {userInfo?.eduName && (
+            <li className="flex">
+              <span>Nomi:</span>
+              <h4>{userInfo?.eduName}</h4>
+            </li>
+          )}
+          {userInfo?.eduAddress && (
+            <li className="flex">
+              <span>Manzil:</span>
+              <h4>{userInfo?.eduAddress}</h4>
+            </li>
+          )}
         </ul>
       </div>
     </div>
