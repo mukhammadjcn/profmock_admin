@@ -170,3 +170,17 @@ export const GetThemesByMinistryConfig = (params = "") => {
 export const GetResourcesByMinistryConfig = (id) => {
   return GetFunc(`admin/getAllResource?themeId=${id}`);
 };
+
+// Ministry stats
+export const GetMinistryStatConfig = (params = "") => {
+  return GetFunc(`/statistic/resourceCountByMinistry${params}`);
+};
+export const GetResourceByDateMinistryConfig = (params = "") => {
+  return GetFunc(`/statistic/resourceCountDateByMinistry${params}`);
+};
+export const GetDownloadResourceByDateMinistryConfig = (params = "") => {
+  return GetFunc(`/statistic/downloadResourceCountDateByMinistry${params}`);
+};
+export const GetPerfectDownloadMinistryConfig = (params = "") => {
+  return GetFunc(`/statistic/downloadResourceCountByMinistry${params}`);
+};

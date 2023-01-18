@@ -9,17 +9,21 @@ import {
   GaugeConfig,
 } from "@ant-design/plots";
 import "src/styles/statistcs.scss";
-import { isAdmin, isManagment, role } from "src/server/Host";
+import { isAdmin, isManagment, isMinistry } from "src/server/Host";
 import { CatchError } from "src/utils/index";
 import { resourceType } from "src/assets/data";
 import {
-  GetDownloadResourceByDateConfig,
-  GetDownloadResourceByDateRegionConfig,
+  GetUniverStatConfig,
+  GetBoshqarmalarConfig,
+  GetMinistryStatConfig,
   GetManagmentStatConfig,
   GetMyCollegesListConfig,
   GetPerfectDownloadConfig,
   GetPerfectDownloadRegionConfig,
-  GetUniverStatConfig,
+  GetDownloadResourceByDateConfig,
+  GetPerfectDownloadMinistryConfig,
+  GetDownloadResourceByDateRegionConfig,
+  GetDownloadResourceByDateMinistryConfig,
 } from "src/server/config/Urls";
 import { useSearchParams } from "react-router-dom";
 import { Select, Spin } from "antd";
@@ -151,7 +155,7 @@ const Statistcs: React.FC = () => {
   const setCollege = (val: any) => {
     setCollegeId(val);
     handleMakeParams("eduId", val);
-    getStatsManagment();
+    isManagment() ? getStatsManagment() : getStatsMinistry();
     window.scrollTo(0, 0);
   };
   const urlMaker = () => {
@@ -222,8 +226,6 @@ const Statistcs: React.FC = () => {
       );
       setBarChart(array);
 
-      console.log(array);
-
       // Daily download stats
       const dateStat = await GetDownloadResourceByDateRegionConfig(urlMaker());
       setLineChart(
@@ -237,7 +239,51 @@ const Statistcs: React.FC = () => {
     }
     setLoading(false);
   };
-  const getStatsMinistry = async () => {};
+  const getStatsMinistry = async () => {
+    setLoading(true);
+    try {
+      // Universities list
+      const list = await GetBoshqarmalarConfig();
+      setList(
+        list.data.content.reduce(
+          (all: any, current: any) => [
+            ...all,
+            { value: current?.id, label: current?.region },
+          ],
+          []
+        )
+      );
+
+      // Percent stats
+      const percentStat = await GetPerfectDownloadMinistryConfig(urlMaker());
+      setPercent((Number(percentStat.data?.jami) || 0) / 100);
+
+      // Stats in file types
+      const { data } = await GetMinistryStatConfig(urlMaker());
+      let array = resourceType;
+      array.forEach((item: any) => {
+        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
+      });
+      setAll(
+        data.reduce((all: any, current: any) => (all += current?.count), 0)
+      );
+      setBarChart(array);
+
+      // Daily download stats
+      const dateStat = await GetDownloadResourceByDateMinistryConfig(
+        urlMaker()
+      );
+      setLineChart(
+        dateStat.data.sort(
+          (a: any, b: any) =>
+            new Date(a?.sana).getTime() - new Date(b?.sana).getTime()
+        )
+      );
+    } catch (error) {
+      CatchError(error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     isAdmin()
@@ -250,11 +296,14 @@ const Statistcs: React.FC = () => {
   return (
     <Spin tip="Yuklanmaoqda..." spinning={loading}>
       <div className="statistcs">
-        {isManagment() && (
+        {(isManagment() || isMinistry()) && (
           <div className="flex" style={{ marginBottom: 16 }}>
             <h3>
-              Ma'lum bir ta'lim muassasasining ma'lumotlarini ko'rish uchun uni
-              ro'yhatdan tanlang !
+              {isManagment()
+                ? `Ma'lum bir ta'lim muassasasining ma'lumotlarini ko'rish uchun uni
+                ro'yhatdan tanlang !`
+                : `Ma'lum bir boshqarmaning ma'lumotlarini ko'rish uchun uni
+                ro'yhatdan tanlang !`}
             </h3>
             <Select
               showSearch
