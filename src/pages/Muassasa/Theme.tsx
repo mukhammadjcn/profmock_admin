@@ -215,49 +215,62 @@ const Theme: React.FC = () => {
   };
   const CreateResource = async (val: any) => {
     const { type, url, file } = val;
+    console.log(file);
 
-    if (type && url) {
-      try {
-        await PostResourceConfig({
-          url,
-          type,
-          themeId,
-        });
+    // // set loading true
+    // setUploadLoading(true);
 
-        message.success("Muvofaqqiyatli qo'shildi");
-        setIsModalFile(false);
-        GetResources(themeId.toString());
-        formFile.resetFields();
-      } catch (error) {
-        CatchError(error);
-      }
-    } else {
-      try {
-        // set loading true
-        setUploadLoading(true);
+    // if (type && url) {
+    //   try {
+    //     await PostResourceConfig({
+    //       url,
+    //       type,
+    //       themeId,
+    //     });
 
-        // Gettin data
-        let formData = new FormData();
-        formData.append("file", file?.originFileObj);
+    //     message.success("Muvofaqqiyatli qo'shildi");
+    //     setIsModalFile(false);
+    //     GetResources(themeId.toString());
+    //     formFile.resetFields();
+    //   } catch (error) {
+    //     CatchError(error);
+    //   }
+    // } else {
+    //   if (
+    //     (type == "Videodarslar" && file?.size < 300000000) ||
+    //     file?.size < 100000000
+    //   ) {
+    //     try {
+    //       // Getting data
+    //       let formData = new FormData();
+    //       formData.append("file", file?.originFileObj);
 
-        const { data } = await PostFileConfig(formData);
-        await PostResourceConfig({
-          url: data?.object,
-          type,
-          themeId,
-        });
+    //       const { data } = await PostFileConfig(formData);
+    //       await PostResourceConfig({
+    //         url: data?.object,
+    //         type,
+    //         themeId,
+    //       });
 
-        // upload loading false
-        setUploadLoading(false);
+    //       message.success("Muvofaqqiyatli qo'shildi");
+    //       setIsModalFile(false);
+    //       GetResources(themeId.toString());
+    //       formFile.resetFields();
+    //     } catch (error) {
+    //       CatchError(error);
+    //     }
+    //   } else {
+    //     (type == "Videodarslar" && file?.size < 300000000) ||
+    //     file?.size < 100000000
+    //       ? message.info("Video hajmi 300 mb dan ortiq bo'lmasligi kerak !", 3)
+    //       : message.info("Fayl hajmi 100 mb dan ortiq bo'lmasligi kerak !", 3);
+    //     setIsModalFile(false);
+    //     formFile.resetFields();
+    //   }
+    // }
 
-        message.success("Muvofaqqiyatli qo'shildi");
-        setIsModalFile(false);
-        GetResources(themeId.toString());
-        formFile.resetFields();
-      } catch (error) {
-        CatchError(error);
-      }
-    }
+    // // upload loading false
+    // setUploadLoading(false);
   };
   const DeleteResource = async (id: number) => {
     Modal.confirm({
@@ -513,7 +526,9 @@ const Theme: React.FC = () => {
                   maxCount={1}
                   multiple={false}
                   beforeUpload={() => false}
-                  accept={resourceType == "Videodarslar" ? "video/*" : ""}
+                  accept={
+                    resourceType == "Videodarslar" ? "video/*" : "application/*"
+                  }
                 >
                   <p className="ant-upload-drag-icon">
                     <InboxOutlined />

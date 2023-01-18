@@ -1,17 +1,12 @@
 import { Table } from "antd";
+import { Link } from "react-router-dom";
 import { ColumnsType } from "antd/es/table";
 import { IBoshqarmaList } from "src/types/index";
 import React, { useEffect, useState } from "react";
 import { CatchError, LastPage } from "src/utils/index";
-import { Link } from "react-router-dom";
-import {
-  GetManagmentStatConfig,
-  GetBoshqarmalarConfig,
-} from "src/server/config/Urls";
-import { resourceType } from "src/assets/data";
+import { GetBoshqarmalarConfig } from "src/server/config/Urls";
 
 const VazirlikHome: React.FC = () => {
-  const [stats, setStats] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [directions, setDirections] = useState<IBoshqarmaList[]>([]);
 
@@ -82,41 +77,13 @@ const VazirlikHome: React.FC = () => {
     }
     setLoading(false);
   };
-  const GetStats = async () => {
-    try {
-      const { data } = await GetManagmentStatConfig();
-      let array = resourceType;
-      array.forEach((item: any) => {
-        item.count = data.find((el: any) => el.type === item.type)?.count || 0;
-      });
-      setStats(array);
-    } catch (error) {
-      CatchError(error);
-    }
-  };
 
   useEffect(() => {
-    // GetStats();
     GetMyBoshqarma();
   }, []);
 
   return (
     <div className="flex">
-      <div className="college__info">
-        {stats.length > 0 ? (
-          stats?.map((item: any, index: number) => (
-            <div className="flex" key={index}>
-              <span>{item?.type}</span>
-              <h4>{item?.count}</h4>
-            </div>
-          ))
-        ) : (
-          <h3 style={{ fontWeight: 500, fontSize: 17 }}>
-            Hech qanday resurs yuklanmagan !
-          </h3>
-        )}
-      </div>
-
       <div className="college__directions">
         <Table
           columns={columns}

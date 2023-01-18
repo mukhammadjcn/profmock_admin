@@ -35,7 +35,7 @@ const Home: React.FC = () => {
               kechki taʼlim shakllarida oʻquv jarayonini masofadan turib
               oʻqitish tizimi.
             </p>
-            <div className="home-user__login">
+            {/* <div className="home-user__login">
               {isUser() ? (
                 <Button type="primary" size="large">
                   <Link to={"/profile"} style={{ color: "white" }}>
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
                   </a>
                 </Button>
               )}
-            </div>
+            </div> */}
 
             <img
               src={require("src/assets/images/main.png")}

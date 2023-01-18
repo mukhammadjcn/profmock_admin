@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Divider, Form, Input, message } from "antd";
 import { MaskedInput } from "antd-mask-input";
 import { LoginConfig } from "src/server/config/Urls";
 import { CatchError, PrettyPhone } from "src/utils/index";
@@ -68,6 +68,18 @@ function SigninForm({ setTab, setSection }: any) {
       <Button htmlType="submit" type="primary" size="large">
         Kirish
       </Button>
+
+      <Divider plain>yoki</Divider>
+
+      <a href="https://prof-dist.edu.uz/api/auth/oneId">
+        <Button
+          size="large"
+          type="primary"
+          style={{ backgroundColor: "#6a25cd" }}
+        >
+          ONE ID orqali
+        </Button>
+      </a>
     </Form>
   );
 }
