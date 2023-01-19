@@ -118,7 +118,7 @@ const Direaction: React.FC = () => {
     options: directionsList,
     style: { width: "100%" },
     maxTagCount: "responsive",
-    placeholder: "Yonalishlarni tanlang !",
+    placeholder: "Yo'nalishlarni tanlang !",
     filterOption: (input, option) =>
       (option?.label?.toString().toLowerCase() ?? "").includes(input),
     filterSort: (optionA, optionB) =>
@@ -382,7 +382,7 @@ const Direaction: React.FC = () => {
         <Form onFinish={SendDirections} layout="vertical" form={form}>
           <Form.Item
             name="directionIds"
-            label="Yonalishlar"
+            label="Yo'nalishlar"
             rules={[
               {
                 required: true,
