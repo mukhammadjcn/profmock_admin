@@ -205,7 +205,7 @@ const Statistcs: React.FC = () => {
         list.data.content.reduce(
           (all: any, current: any) => [
             ...all,
-            { value: current?.id, label: current?.eduName },
+            { value: +current?.eduId, label: current?.eduName },
           ],
           []
         )
@@ -248,7 +248,7 @@ const Statistcs: React.FC = () => {
         list.data.content.reduce(
           (all: any, current: any) => [
             ...all,
-            { value: current?.id, label: current?.region },
+            { value: +current?.regionId, label: current?.address },
           ],
           []
         )
