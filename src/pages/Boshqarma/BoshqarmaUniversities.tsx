@@ -1,16 +1,29 @@
-import { Input, Table } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Table,
+  Image,
+  message,
+} from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IUniverList } from "src/types/index";
 import React, { useEffect, useState } from "react";
-import { CatchError, LastPage } from "src/utils/index";
+import { CatchError, LastPage, PrettyPhone } from "src/utils/index";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   GetMyCollegesConfig,
   GetManagmentStatConfig,
   GetUniversitiesConfig,
+  CheckAdminConfig,
+  AddTMAdminConfig,
 } from "src/server/config/Urls";
 import { resourceType } from "src/assets/data";
 import { isManagment } from "src/server/Host";
+import { SettingOutlined } from "@ant-design/icons";
+import { MaskedInput } from "antd-mask-input";
 
 const BoshqarmaUniversities: React.FC = () => {
   const [stats, setStats] = useState<any>([]);
@@ -25,6 +38,13 @@ const BoshqarmaUniversities: React.FC = () => {
   const [current, setCurrent] = useState(currentPage ? currentPage : 1);
   const [search, setSearh] = useState(currentSearch ? currentSearch : "");
 
+  // For change admin
+  const [form] = Form.useForm();
+  const [userID, setUserID] = useState(0);
+  const [eduID, setEduID] = useState(0);
+  const [user, setUser] = useState<any>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const columns: ColumnsType<IUniverList> = [
     {
       title: "Taʼlim muassasasi nomi",
@@ -32,7 +52,7 @@ const BoshqarmaUniversities: React.FC = () => {
       key: "eduName",
       render: (_, item) => (
         <Link
-          to={`/administration/universities/directions?page=1&eduId=${item.key}`}
+          to={`/administration/universities/directions?page=1&eduId=${item.eduId}`}
           onClick={() => LastPage()}
         >
           {item.eduName}
@@ -47,18 +67,9 @@ const BoshqarmaUniversities: React.FC = () => {
       width: 200,
     },
     {
-      title: "Viloyat",
-      dataIndex: "region",
-      key: "region",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Tuman",
-      dataIndex: "district",
-      key: "district",
-      align: "center",
-      width: 200,
+      title: "Manzil",
+      dataIndex: "address",
+      key: "address",
     },
   ];
   const columnsMinistry: ColumnsType<IUniverList> = [
@@ -68,12 +79,31 @@ const BoshqarmaUniversities: React.FC = () => {
       key: "eduName",
       render: (_, item) => (
         <Link
-          to={`/ministry/regions/universities/directions?page=1&eduId=${item.key}`}
+          to={`/ministry/regions/universities/directions?page=1&eduId=${item.eduId}`}
           onClick={() => LastPage()}
         >
           {item.eduName}
         </Link>
       ),
+    },
+    {
+      title: "Ma'sul shaxs",
+      dataIndex: "fullName",
+      key: "fullName",
+    },
+    {
+      title: "Telefon raqam",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+      align: "center",
+      width: 160,
+    },
+    {
+      title: "PINFL",
+      dataIndex: "pinfl",
+      key: "pinfl",
+      align: "center",
+      width: 160,
     },
     {
       title: "Resurslar soni",
@@ -83,18 +113,26 @@ const BoshqarmaUniversities: React.FC = () => {
       width: 200,
     },
     {
-      title: "Viloyat",
-      dataIndex: "region",
-      key: "region",
-      align: "center",
-      width: 200,
+      title: "Manzil",
+      dataIndex: "address",
+      key: "address",
     },
     {
-      title: "Tuman",
-      dataIndex: "district",
-      key: "district",
+      width: 100,
+      key: "actions",
       align: "center",
-      width: 200,
+      title: "Tahrirlash",
+      render: (_, item) => (
+        <Button
+          type="primary"
+          icon={<SettingOutlined />}
+          onClick={() => {
+            setUserID(+item.key);
+            setIsModalOpen(true);
+            setEduID(+item.eduId);
+          }}
+        />
+      ),
     },
   ];
 
@@ -129,6 +167,45 @@ const BoshqarmaUniversities: React.FC = () => {
       url = url + `${url.length < 2 ? "" : "&"}${key}=${value}`;
     }
     return url.length > 2 ? url : "";
+  };
+
+  const CheckAdmin = async ({ pinfl, given_date }: any) => {
+    try {
+      const { data } = await CheckAdminConfig({
+        pinfl,
+        given_date: given_date?.format("YYYY-MM-DD"),
+      });
+
+      if (data?.data !== null) {
+        setUser(data?.data);
+        message.success("Muvofaqqiyatli topildi !");
+      } else {
+        message.error("Bu shaxs ma'lumotlari topilmadi !");
+      }
+    } catch (error) {
+      CatchError(error);
+    }
+  };
+  const AddAdmin = async ({ pinfl, given_date, phoneNumber }: any) => {
+    try {
+      const { data } = await AddTMAdminConfig({
+        pinfl,
+        id: userID,
+        eduId: eduID,
+        phoneNumber: PrettyPhone(phoneNumber),
+        givenDate: given_date?.format("YYYY-MM-DD"),
+      });
+
+      message.success(data?.message);
+      setIsModalOpen(false);
+      form.resetFields();
+      setEduID(0);
+      setUserID(0);
+      setUser({});
+      getByRole();
+    } catch (error) {
+      CatchError(error);
+    }
   };
 
   const GetStats = async () => {
@@ -252,6 +329,125 @@ const BoshqarmaUniversities: React.FC = () => {
           columns={isManagment() ? columns : columnsMinistry}
         />
       </div>
+
+      <Modal
+        width={600}
+        title="Mavzu qo'shish"
+        open={isModalOpen}
+        footer={null}
+        onCancel={() => {
+          setIsModalOpen(false);
+          form.resetFields();
+          setEduID(0);
+          setUserID(0);
+          setUser({});
+        }}
+      >
+        <Form
+          onFinish={user?.pinfl ? AddAdmin : CheckAdmin}
+          layout="vertical"
+          form={form}
+        >
+          <div className="flex">
+            <Form.Item
+              style={{ flexGrow: 1 }}
+              label="JSHSHR ni kiriting"
+              name="pinfl"
+              rules={[
+                {
+                  required: true,
+                  message: "JSHSHR ni kiriting",
+                },
+                {
+                  pattern: /^\d{14}$/,
+                  message: "Iltimos JSHSHR ni to'liq kiriting",
+                },
+              ]}
+            >
+              <MaskedInput
+                mask={"00000000000000"}
+                disabled={user?.pinfl}
+                placeholder="PINFL"
+              />
+            </Form.Item>
+            <Form.Item
+              style={{ flexGrow: 1 }}
+              name="given_date"
+              label="Passport berilgan sana"
+              rules={[
+                {
+                  required: true,
+                  message: "PINFLni kiriting !",
+                },
+              ]}
+            >
+              <DatePicker
+                format={"YYYY-MM-DD"}
+                disabled={user?.pinfl}
+                style={{ width: "100%" }}
+                placeholder="Passport berilgan sana"
+              />
+            </Form.Item>
+          </div>
+
+          {user?.pinfl && (
+            <div style={{ display: "flex", gap: 16 }}>
+              <Image
+                width={180}
+                src={`data:image/jpeg;base64,${user?.photo ?? ""}`}
+              />
+              <div style={{ flexGrow: 1 }}>
+                <Form.Item
+                  style={{ width: "100%" }}
+                  label="Familya, ismi, sharifi"
+                >
+                  <Input
+                    disabled
+                    value={`${user?.first_name} ${user?.last_name} ${user?.middle_name}`}
+                  />
+                </Form.Item>
+                <Form.Item style={{ width: "100%" }} label="Manzil">
+                  <Input disabled value={user?.permanent_address} />
+                </Form.Item>
+                <Form.Item
+                  label="Telefon raqamingiz"
+                  name="phoneNumber"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Telefon raqamingizni kiriting",
+                    },
+                    {
+                      pattern: /^\(\d{2}\) \d{3} \d{2} \d{2}$/,
+                      message: "Iltimos telefon raqamni to'liq kiriting",
+                    },
+                  ]}
+                >
+                  <MaskedInput prefix="+998" mask={"(00) 000 00 00"} />
+                </Form.Item>
+              </div>
+            </div>
+          )}
+
+          <div className="flex" style={{ justifyContent: "flex-end" }}>
+            <Button
+              onClick={() => {
+                setIsModalOpen(false);
+                form.resetFields();
+                setEduID(0);
+                setUserID(0);
+                setUser({});
+              }}
+            >
+              Orqaga
+            </Button>
+
+            <Button htmlType="submit" type="primary">
+              {user?.pinfl ? "Tasdiqlash" : "Yuborish"}
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 };

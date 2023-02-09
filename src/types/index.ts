@@ -27,15 +27,23 @@ export interface IUniverList {
   key: string;
   eduName: string;
   district: string;
+  address: string;
+  eduId: string;
+  fullName: string;
+  phoneNumber: string;
+  pinfl: string;
+  count: number;
 }
+
 export interface IBoshqarmaList {
   key: string;
   id: number;
-  region: string;
   address: string;
   count: number;
   phoneNumber: string;
-  name: string;
+  fullName: string;
+  regionId: number;
+  pinfl: string;
 }
 
 // ------------------------------------------

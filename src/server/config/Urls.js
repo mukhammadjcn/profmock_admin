@@ -184,3 +184,14 @@ export const GetDownloadResourceByDateMinistryConfig = (params = "") => {
 export const GetPerfectDownloadMinistryConfig = (params = "") => {
   return GetFunc(`/statistic/downloadResourceCountByMinistry${params}`);
 };
+
+// Add admins
+export const CheckAdminConfig = (data) => {
+  return CreateFunc("admin/checkUser/signIn", data);
+};
+export const AddTMAdminConfig = (data) => {
+  return EditFunc("admin/updateTMAdmin", data);
+};
+export const AddManagmentAdminConfig = (data) => {
+  return EditFunc("admin/updateManagementAdmin", data);
+};
