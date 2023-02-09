@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Image } from "antd";
 import { useAppSelector } from "src/hooks/index";
+import { isManagment } from "src/server/Host";
 
 const Sozlama: React.FC = () => {
   const userInfo = useAppSelector((state) => state.User.user);
@@ -42,33 +43,35 @@ const Sozlama: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="sozlama__noImage">
-        <div className="flex">
-          <h1>Taʼlim muassasasi pasporti</h1>
-        </div>
+      {!isManagment() && (
+        <div className="sozlama__noImage">
+          <div className="flex">
+            <h1>Taʼlim muassasasi pasporti</h1>
+          </div>
 
-        <h2>{userInfo?.fullName}</h2>
-        <ul>
-          {userInfo?.id && (
-            <li className="flex">
-              <span>TM id:</span>
-              <h4>{userInfo?.id}</h4>
-            </li>
-          )}
-          {userInfo?.eduName && (
-            <li className="flex">
-              <span>Nomi:</span>
-              <h4>{userInfo?.eduName}</h4>
-            </li>
-          )}
-          {userInfo?.eduAddress && (
-            <li className="flex">
-              <span>Manzil:</span>
-              <h4>{userInfo?.eduAddress}</h4>
-            </li>
-          )}
-        </ul>
-      </div>
+          <h2>{userInfo?.fullName}</h2>
+          <ul>
+            {userInfo?.id && (
+              <li className="flex">
+                <span>TM id:</span>
+                <h4>{userInfo?.id}</h4>
+              </li>
+            )}
+            {userInfo?.eduName && (
+              <li className="flex">
+                <span>Nomi:</span>
+                <h4>{userInfo?.eduName}</h4>
+              </li>
+            )}
+            {userInfo?.eduAddress && (
+              <li className="flex">
+                <span>Manzil:</span>
+                <h4>{userInfo?.eduAddress}</h4>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

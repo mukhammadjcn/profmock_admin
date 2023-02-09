@@ -19,7 +19,7 @@ const Vazirlik: React.FC = () => {
     let keyword = pathname.split("/ministry/")[1];
 
     return keyword?.includes("statistcs")
-      ? "Statistika"
+      ? "Statistika - Vazirlik"
       : keyword?.includes("sozlama")
       ? "Sozlamalar"
       : keyword?.includes("regions/universities/directions/subject/theme")
@@ -65,7 +65,7 @@ const Vazirlik: React.FC = () => {
 
       <h1>
         {GiveTitle() !== "Boshqarmalar ro'yhati" &&
-          GiveTitle() !== "Statistika" &&
+          GiveTitle() !== "Statistika - Vazirlik" &&
           GiveTitle() !== "Sozlamalar" && (
             <Button
               style={{ marginRight: 16 }}

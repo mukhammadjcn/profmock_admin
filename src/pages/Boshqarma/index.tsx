@@ -19,7 +19,7 @@ const Muassasa: React.FC = () => {
     let keyword = pathname.split("/administration/")[1];
 
     return keyword?.includes("statistcs")
-      ? "Statistika"
+      ? "Statistika - Hududiy boshqarma"
       : keyword?.includes("sozlama")
       ? "Sozlamalar"
       : keyword?.includes("directions/subject/theme")
@@ -63,7 +63,7 @@ const Muassasa: React.FC = () => {
 
       <h1>
         {GiveTitle() !== "Ta'lim muassasalari ro'yhati" &&
-          GiveTitle() !== "Statistika" &&
+          GiveTitle() !== "Statistika - Hududiy boshqarma" &&
           GiveTitle() !== "Sozlamalar" && (
             <Button
               style={{ marginRight: 16 }}
