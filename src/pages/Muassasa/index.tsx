@@ -19,7 +19,7 @@ const Muassasa: React.FC = () => {
     let keyword = pathname.split("/college/")[1];
 
     return keyword?.includes("statistcs")
-      ? "Statistika"
+      ? "Statistika - Ta'lim muassasa"
       : keyword?.includes("sozlama")
       ? "Sozlamalar"
       : keyword?.includes("directions/subject/theme")

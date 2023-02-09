@@ -60,6 +60,25 @@ const BoshqarmaUniversities: React.FC = () => {
       ),
     },
     {
+      title: "Ma'sul shaxs",
+      dataIndex: "fullName",
+      key: "fullName",
+    },
+    {
+      title: "Telefon raqam",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+      align: "center",
+      width: 160,
+    },
+    {
+      title: "PINFL",
+      dataIndex: "pinfl",
+      key: "pinfl",
+      align: "center",
+      width: 160,
+    },
+    {
       title: "Resurslar soni",
       dataIndex: "count",
       key: "count",
