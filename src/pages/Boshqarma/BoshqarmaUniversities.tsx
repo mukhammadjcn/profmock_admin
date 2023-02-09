@@ -332,7 +332,7 @@ const BoshqarmaUniversities: React.FC = () => {
 
       <Modal
         width={600}
-        title="Mavzu qo'shish"
+        title="Ta'lim muassasa adminini tahrirlash"
         open={isModalOpen}
         footer={null}
         onCancel={() => {

@@ -168,7 +168,7 @@ const VazirlikHome: React.FC = () => {
 
       <Modal
         width={600}
-        title="Mavzu qo'shish"
+        title="Boshqarma adminini tahrirlash"
         open={isModalOpen}
         footer={null}
         onCancel={() => {
